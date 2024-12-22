@@ -1,4 +1,6 @@
-package rental.model;
+package rental.model.car;
+
+import rental.model.Validation;
 
 public class Make {
 
