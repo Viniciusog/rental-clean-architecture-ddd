@@ -27,7 +27,7 @@ public final class Make {
     @Override
     public boolean equals(Object other) {
         return other instanceof Make otherMake
-                && StringUtils.equalsIgnoreCase(value, otherMake.value());
+                && StringUtils.equalsIgnoreCase(value, otherMake.value);
     }
 
     @Override
