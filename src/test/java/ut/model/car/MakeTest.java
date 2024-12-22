@@ -1,4 +1,6 @@
 package ut.model.car;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -10,7 +12,6 @@ import static org.hamcrest.Matchers.is;
 
 
 public class MakeTest {
-
     @ParameterizedTest
     @ValueSource(strings = {"Ford", "Toyota"})
     void createSuccessfully(String value) {
@@ -27,5 +28,19 @@ public class MakeTest {
                 () -> new Make(value));
 
         assertThat(expection.getMessage(), is("Make value is required."));
+    }
+
+    @Test
+    void equalsAndHashCode() {
+        EqualsVerifier.forClass(Make.class).verify();
+    }
+
+    @Test
+    void equalsAndHashCodeIgnoringCase() {
+        Make lower = new Make("name");
+        Make upper = new Make("NAME");
+
+        assertThat(lower, is(upper));
+        assertThat(lower.hashCode(), is(upper.hashCode()));
     }
 }
