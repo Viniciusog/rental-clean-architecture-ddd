@@ -1,13 +1,12 @@
-package ut.model.car;
+package rental.ut.model.car;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.beans.factory.annotation.Value;
-import rental.model.car.Make;
-import rental.model.car.Model;
+import rental.car.Make;
+import rental.car.Model;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
