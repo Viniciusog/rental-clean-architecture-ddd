@@ -1,7 +1,7 @@
 package rental.model.car;
 
 import org.apache.commons.lang3.StringUtils;
-import rental.model.Validation;
+import rental.Validation;
 
 import java.util.Objects;
 

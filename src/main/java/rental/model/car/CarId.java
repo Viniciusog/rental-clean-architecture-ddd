@@ -1,6 +1,6 @@
 package rental.model.car;
 
-import rental.model.SurrogateId;
+import rental.SurrogateId;
 
 public class CarId extends SurrogateId {
 

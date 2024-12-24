@@ -1,4 +1,4 @@
-package rental.model;
+package rental;
 
 public class Validation {
 
