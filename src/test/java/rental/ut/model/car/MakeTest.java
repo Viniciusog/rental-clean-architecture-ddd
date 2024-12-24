@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import rental.car.Make;
+import rental.model.car.Make;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -17,6 +17,9 @@ public class MakeTest {
     void createSuccessfully(String value) {
         Make make = new Make(value);
         assertThat(make.value(), is(value));
+
+        Make otherMake = Make.of(value);
+        assertThat(otherMake.value(), is(value));
     }
 
     @ParameterizedTest
@@ -26,8 +29,12 @@ public class MakeTest {
         IllegalArgumentException expection =
                 assertThrows(IllegalArgumentException.class,
                 () -> new Make(value));
+        IllegalArgumentException secondException = assertThrows(
+                IllegalArgumentException.class,
+                () -> Make.of(value));
 
         assertThat(expection.getMessage(), is("Make value is required."));
+        assertThat(secondException.getMessage(), is("Make value is required."));
     }
 
     @Test
