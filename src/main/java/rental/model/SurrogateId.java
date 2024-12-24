@@ -10,6 +10,7 @@ public abstract class SurrogateId {
     private final Long value;
 
     protected SurrogateId(Long value) {
+        validate(value);
         this.value = value;
     }
 
