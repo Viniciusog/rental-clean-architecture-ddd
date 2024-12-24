@@ -16,25 +16,19 @@ public class MakeTest {
     @ValueSource(strings = {"Ford", "Toyota"})
     void createSuccessfully(String value) {
         Make make = new Make(value);
-        assertThat(make.value(), is(value));
 
-        Make otherMake = Make.of(value);
-        assertThat(otherMake.value(), is(value));
+        assertThat(make.value(), is(value));
     }
 
     @ParameterizedTest
     @NullSource
     @ValueSource(strings = {"", " "})
     void throwsExceptionWhenValueIsInvalid(String value) {
-        IllegalArgumentException expection =
+        IllegalArgumentException exception =
                 assertThrows(IllegalArgumentException.class,
                 () -> new Make(value));
-        IllegalArgumentException secondException = assertThrows(
-                IllegalArgumentException.class,
-                () -> Make.of(value));
 
-        assertThat(expection.getMessage(), is("Make value is required."));
-        assertThat(secondException.getMessage(), is("Make value is required."));
+        assertThat(exception.getMessage(), is("Make value is required."));
     }
 
     @Test

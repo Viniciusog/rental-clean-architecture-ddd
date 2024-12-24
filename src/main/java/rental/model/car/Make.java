@@ -14,11 +14,7 @@ public final class Make {
     public Make(String value) {
         this.value = Validation.required(value, "Make value is required.");
     }
-
-    public static Make of(String value) {
-        return new Make(value);
-    }
-
+    
     public String value() {
         return this.value;
     }
