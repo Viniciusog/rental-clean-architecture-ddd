@@ -35,6 +35,11 @@ public class Car {
         this.id = id;
     }
 
+    public void update(Model model, Year year) {
+        this.model = validateModel(model);
+        this.year = validateYear(year);
+    }
+
     private Year validateYear(Year year) {
         return Validation.required(year, "Car year is required.");
     }
