@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - include:
+      file: classpath:/database/changelog.yml
+  - changeSet:
+      id: data1
+      author: vinicius.guimaraes
+      changes:
+        - loadData:
+            tableName: customer
+            file: classpath:/data/customer.csv
+            separator: ";"
+            quotchar: '"'
+  - changeSet:
+      id: data2
+      author: vinicius.guimaraes
+      changes:
+        - loadData:
+            tableName: car
+            file: classpath:/data/car.csv
+            separator: ";"
+            quotchar: '"'
+  - changeSet:
+      id: restart_auto_inc
+      author: "vinicius.guimaraes"
+      changes:
+        - sql:
+            dbms: h2
+            sql: | 
+              ALTER TABLE customer ALTER COLUMN id RESTART WITH (SELECT MAX(id) + 1 FROM customer);
+              ALTER TABLE car ALTER COLUMN id RESTART WITH (SELECT MAX(id) + 1 FROM car);

@@ -1,0 +1,5 @@
+id;name;email;active
+1;Anna Smith;anna.smith@server.com;true
+2;John Smith;john.smith@server.com;true
+3;John Lennon;john.lennon@server.com;true
+4;Bill Gates;bill.gates@server.com;false
