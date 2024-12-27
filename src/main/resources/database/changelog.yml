@@ -1,0 +1,59 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: vinicius.guimaraes
+      changes:
+        - createTable:
+            tableName: customer
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(70)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(254)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: active
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 2
+      author: vinicius.guimaraes
+      changes:
+        - createTable:
+            tableName: car
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: make
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: model
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: model_year
+                  type: SMALLINT
+                  constraints:
+                    nullable: false
