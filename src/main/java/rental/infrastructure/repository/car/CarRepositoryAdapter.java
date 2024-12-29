@@ -1,6 +1,7 @@
 package rental.infrastructure.repository.car;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import rental.model.car.Car;
 import rental.model.car.CarId;
 import rental.model.car.CarRepository;
@@ -9,6 +10,7 @@ import rental.model.exception.CarNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class CarRepositoryAdapter implements CarRepository {
 
     @Autowired
