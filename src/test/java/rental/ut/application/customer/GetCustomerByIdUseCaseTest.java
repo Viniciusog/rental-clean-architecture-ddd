@@ -2,7 +2,7 @@ package rental.ut.application.customer;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import rental.application.customer.GetByIdCustomerUseCase;
+import rental.application.customer.GetCustomerByIdUseCase;
 import rental.model.customer.Customer;
 import rental.model.customer.CustomerRepository;
 import rental.model.exception.CustomerNotFoundException;
@@ -17,15 +17,15 @@ import static rental.fixture.CustomerFixture.CUSTOMER_ID;
 import static org.hamcrest.Matchers.is;
 import static rental.fixture.CustomerFixture.aCustomerWithId;
 
-public class GetByIdCustomerUseCaseTest {
+public class GetCustomerByIdUseCaseTest {
 
     private CustomerRepository repository;
-    private GetByIdCustomerUseCase useCase;
+    private GetCustomerByIdUseCase useCase;
 
     @BeforeEach
     public void beforeEach() {
         repository = mock(CustomerRepository.class);
-        useCase = new GetByIdCustomerUseCase(repository);
+        useCase = new GetCustomerByIdUseCase(repository);
     }
 
     @Test

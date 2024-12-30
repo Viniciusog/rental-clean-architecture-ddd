@@ -5,11 +5,11 @@ import rental.model.customer.CustomerId;
 import rental.model.customer.CustomerRepository;
 import rental.model.exception.CustomerNotFoundException;
 
-public class GetByIdCustomerUseCase {
+public class GetCustomerByIdUseCase {
 
     private CustomerRepository repository;
 
-    public GetByIdCustomerUseCase(CustomerRepository repository) {
+    public GetCustomerByIdUseCase(CustomerRepository repository) {
         this.repository = repository;
     }
 
