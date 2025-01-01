@@ -28,3 +28,12 @@ databaseChangeLog:
             sql: | 
               ALTER TABLE customer ALTER COLUMN id RESTART WITH (SELECT MAX(id) + 1 FROM customer);
               ALTER TABLE car ALTER COLUMN id RESTART WITH (SELECT MAX(id) + 1 FROM car);
+  - changeSet:
+      id: data3
+      author: vinicius.guimaraes
+      changes:
+        - loadData:
+            tableName: rental
+            file: classpath:/data/rental.csv
+            separator: ";"
+            quotchar: '"'
