@@ -109,3 +109,16 @@ databaseChangeLog:
             constraintName: fk_rental_car
             referencedTableName: car
             referencedColumnNames: id
+  - changeSet:
+      id: 4
+      author: vinicius.guimaraes
+      changes:
+        - addColumn:
+            tableName: car
+            columns:
+              - column:
+                  name: daily_price
+                  type: NUMERIC(19, 2)
+                  constraints:
+                    nullable: false
+
