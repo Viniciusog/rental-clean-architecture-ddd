@@ -18,8 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DataJpaTest
@@ -82,5 +81,33 @@ public class RentalRepositoryTest {
         List<Rental> rentals = repository.getAll();
 
         assertThat(rentals.size(), is(greaterThanOrEqualTo(4)));
+    }
+
+    @Test
+    void mustGetByCarIdAndDateRange() {
+        CarId carId = CarId.of(1L);
+        LocalDate initialDate = LocalDate.of(2025, 01, 04);
+        LocalDate endDate = LocalDate.of(2025, 2, 8);
+        Rental firstRental = Rental.builder()
+                .id(RentalId.of(3L))
+                .customerId(CustomerId.of(2L))
+                .carId(carId)
+                .initialDate(LocalDate.of(2025, 01, 4))
+                .endDate(LocalDate.of(2025, 1, 10))
+                .totalPrice(BigDecimal.valueOf(500.00))
+                .build();
+        Rental secondRental = Rental.builder()
+                .id(RentalId.of(2L))
+                .customerId(CustomerId.of(1L))
+                .carId(carId)
+                .initialDate(LocalDate.of(2025, 02, 01))
+                .endDate(LocalDate.of(2025, 02, 8))
+                .totalPrice(BigDecimal.valueOf(400.00))
+                .build();
+
+        List<Rental> rentals = repository.getByCarIdAndDateInterval(carId, initialDate, endDate);
+
+        assertThat(rentals.size(), is(greaterThanOrEqualTo(2)));
+        assertThat(rentals, containsInAnyOrder(firstRental, secondRental));
     }
 }

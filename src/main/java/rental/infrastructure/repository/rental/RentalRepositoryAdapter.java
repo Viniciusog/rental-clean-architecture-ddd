@@ -53,6 +53,9 @@ public class RentalRepositoryAdapter implements RentalRepository {
 
     @Override
     public List<Rental> getByCarIdAndDateInterval(CarId carId, LocalDate initialDate, LocalDate endDate) {
-        return List.of();
+        return repository.findByCarIdAndDateRange(carId.value(), initialDate, endDate)
+                .stream()
+                .map(RentalEntity::toRental)
+                .toList();
     }
 }
