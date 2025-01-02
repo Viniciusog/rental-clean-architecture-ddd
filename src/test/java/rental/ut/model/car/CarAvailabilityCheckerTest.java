@@ -34,7 +34,7 @@ public class CarAvailabilityCheckerTest {
                 RentalFixture.RENTAL_INITIAL_DATE,
                 RentalFixture.RENTAL_END_DATE)).thenReturn(List.of());
 
-        boolean available = carAvailabilityChecker.execute(CAR_ID, RENTAL_INITIAL_DATE, RENTAL_END_DATE);
+        boolean available = carAvailabilityChecker.isCarAvailable(CAR_ID, RENTAL_INITIAL_DATE, RENTAL_END_DATE);
 
         assertThat(available, is(true));
     }
@@ -46,7 +46,7 @@ public class CarAvailabilityCheckerTest {
                 RentalFixture.RENTAL_INITIAL_DATE,
                 RentalFixture.RENTAL_END_DATE)).thenReturn(List.of(aRentalWithId().build()));
 
-        boolean available = carAvailabilityChecker.execute(CAR_ID, RENTAL_INITIAL_DATE, RENTAL_END_DATE);
+        boolean available = carAvailabilityChecker.isCarAvailable(CAR_ID, RENTAL_INITIAL_DATE, RENTAL_END_DATE);
 
         assertThat(available, is(false));
     }

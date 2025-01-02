@@ -12,7 +12,7 @@ public class CarAvailabilityChecker {
         this.repository = repository;
     }
 
-    public boolean execute(CarId carId, LocalDate initialDate, LocalDate endDate) {
+    public boolean isCarAvailable(CarId carId, LocalDate initialDate, LocalDate endDate) {
         return repository.getByCarIdAndDateInterval(carId, initialDate, endDate).isEmpty();
     }
 }
