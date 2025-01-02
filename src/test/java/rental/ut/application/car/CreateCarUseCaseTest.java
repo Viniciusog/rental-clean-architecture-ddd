@@ -12,6 +12,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static rental.fixture.AppTransactionFixture.assertThatInTransaction;
 import static rental.fixture.AppTransactionFixture.mockedTransaction;
+import static rental.fixture.CarFixture.DAILY_PRICE;
 
 public class CreateCarUseCaseTest {
 
@@ -32,7 +33,7 @@ public class CreateCarUseCaseTest {
     void mustCreateACar() {
         Car car = CarFixture.aCarWithoutId().build();
 
-        useCase.execute(CarFixture.MODEL, CarFixture.YEAR);
+        useCase.execute(CarFixture.MODEL, CarFixture.YEAR, DAILY_PRICE);
 
         verify(repository).save(car);
     }

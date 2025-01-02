@@ -6,6 +6,7 @@ import rental.model.car.CarId;
 import rental.model.car.Make;
 import rental.model.car.Model;
 
+import java.math.BigDecimal;
 import java.time.Year;
 
 @Entity(name = "Car")
@@ -25,6 +26,9 @@ public class CarEntity {
     @Column(name = "model_year", nullable = false)
     private Short year;
 
+    @Column(name = "daily_price", nullable = false)
+    private BigDecimal dailyPrice;
+
     public CarEntity() {
 
     }
@@ -34,6 +38,7 @@ public class CarEntity {
         this.make = car.model().make().value();
         this.model = car.model().name();
         this.year = (short)car.year().getValue();
+        this.dailyPrice = car.dailyPrice();
     }
 
     public Car toCar() {
@@ -41,6 +46,7 @@ public class CarEntity {
                 .id(CarId.of(id))
                 .model(new Model(new Make(make), model))
                 .year(Year.of(year))
+                .dailyPrice(dailyPrice)
                 .build();
     }
 

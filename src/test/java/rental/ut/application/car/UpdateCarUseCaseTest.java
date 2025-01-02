@@ -41,10 +41,10 @@ public class UpdateCarUseCaseTest {
         Car car = mock(Car.class);
         when(repository.getById(CAR_ID)).thenReturn(Optional.of(car));
 
-        useCase.execute(CAR_ID, MODEL, YEAR);
+        useCase.execute(CAR_ID, MODEL, YEAR, DAILY_PRICE);
 
         InOrder inOrder = Mockito.inOrder(car, repository);
-        inOrder.verify(car).update(MODEL, YEAR);
+        inOrder.verify(car).update(MODEL, YEAR, DAILY_PRICE);
         inOrder.verify(repository).save(car);
     }
 
@@ -54,7 +54,7 @@ public class UpdateCarUseCaseTest {
                 .thenReturn(Optional.empty());
 
         assertThrows(CarNotFoundException.class,
-                () -> useCase.execute(CAR_ID, MODEL, YEAR));
+                () -> useCase.execute(CAR_ID, MODEL, YEAR, DAILY_PRICE));
 
         verify(repository, never()).save(any());
     }
@@ -65,7 +65,7 @@ public class UpdateCarUseCaseTest {
                 .thenReturn(Optional.of(aCarWithId().build()));
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> useCase.execute(CAR_ID, null, YEAR));
+                () -> useCase.execute(CAR_ID, null, YEAR, DAILY_PRICE));
 
         assertThat(exception.getMessage(), is("Car model is required."));
         verify(repository, never()).save(any());
@@ -77,7 +77,7 @@ public class UpdateCarUseCaseTest {
                 .thenReturn(Optional.of(aCarWithId().build()));
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> useCase.execute(CAR_ID, MODEL, null));
+                () -> useCase.execute(CAR_ID, MODEL, null, DAILY_PRICE));
 
         assertThat(exception.getMessage(), is("Car year is required."));
         verify(repository, never()).save(any());

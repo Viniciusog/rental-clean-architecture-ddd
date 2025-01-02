@@ -5,6 +5,7 @@ import rental.model.car.Car;
 import rental.model.car.CarRepository;
 import rental.model.car.Model;
 
+import java.math.BigDecimal;
 import java.time.Year;
 
 public class CreateCarUseCase {
@@ -17,10 +18,11 @@ public class CreateCarUseCase {
         this.repository = repository;
     }
 
-    public void execute(Model model, Year year) {
+    public void execute(Model model, Year year, BigDecimal dailyPrice) {
         Car car = Car.builder()
                 .model(model)
                 .year(year)
+                .dailyPrice(dailyPrice)
                 .build();
         transaction.execute(() -> repository.save(car));
     }
