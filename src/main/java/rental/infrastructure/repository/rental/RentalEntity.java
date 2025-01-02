@@ -55,4 +55,8 @@ public class RentalEntity {
                 .totalPrice(totalPrice)
                 .build();
     }
+
+    public Long id() {
+        return id;
+    }
 }

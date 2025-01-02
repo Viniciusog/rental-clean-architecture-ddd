@@ -37,3 +37,11 @@ databaseChangeLog:
             file: classpath:/data/rental.csv
             separator: ";"
             quotchar: '"'
+  - changeSet:
+      id: restart_auto_inc_rental
+      author: "vinicius.guimaraes"
+      changes:
+        - sql:
+            dbms: h2
+            sql: |
+              ALTER TABLE rental ALTER COLUMN id RESTART WITH (SELECT MAX(id) + 1 FROM rental);
