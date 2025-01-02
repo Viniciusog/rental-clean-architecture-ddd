@@ -20,11 +20,10 @@ public class RentalRepositoryAdapter implements RentalRepository {
     private JpaRentalRepository repository;
 
     @Override
-    public RentalId create(Rental rental) {
+    public RentalId save(Rental rental) {
         RentalEntity entity = new RentalEntity(rental);
         repository.save(entity);
         rental.created(RentalId.of(entity.id()));
-        System.out.println("rental id: " + rental.id().value());
         return RentalId.of(entity.id());
     }
 

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RentalRepository {
-    RentalId create(Rental rental);
+    RentalId save(Rental rental);
     void deleteById(RentalId rentalId);
     Optional<Rental> getById(RentalId rentalId);
     List<Rental> getAll();

@@ -38,7 +38,7 @@ public class RentalRepositoryTest {
                 .totalPrice(BigDecimal.valueOf(500.00))
                 .build();
 
-        RentalId id = repository.create(rental);
+        RentalId id = repository.save(rental);
         Rental rentalRetrieved = repository.getById(rental.id()).get();
 
         assertThat(rental, is(rentalRetrieved));
