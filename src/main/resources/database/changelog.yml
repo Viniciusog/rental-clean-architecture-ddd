@@ -121,4 +121,26 @@ databaseChangeLog:
                   type: NUMERIC(19, 2)
                   constraints:
                     nullable: false
+  - changeSet:
+      id: 5
+      author: vinicius.guimaraes
+      changes:
+        - renameColumn:
+            tableName: rental
+            oldColumnName: initial_date
+            newColumnName: start_time
+            columnDataType: TIMESTAMP
+        - renameColumn:
+            tableName: rental
+            oldColumnName: end_date
+            newColumnName: end_time
+            columnDataType: TIMESTAMP
+        - modifyDataType:
+            tableName: rental
+            columnName: start_time
+            newDataType: TIMESTAMP
+        - modifyDataType:
+            tableName: rental
+            columnName: end_time
+            newDataType: TIMESTAMP
 
