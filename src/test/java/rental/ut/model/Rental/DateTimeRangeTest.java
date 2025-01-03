@@ -1,9 +1,9 @@
 package rental.ut.model.Rental;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Test;
 import rental.model.rental.DateTimeRange;
 
-import java.awt.*;
 import java.time.Instant;
 
 import static org.hamcrest.Matchers.is;
@@ -58,5 +58,10 @@ public class DateTimeRangeTest {
         });
 
         assertThat(exception.getMessage(), is("Start time must come before end time."));
+    }
+
+    @Test
+    void equalsAndHashCode() {
+        EqualsVerifier.simple().forClass(DateTimeRange.class).verify();
     }
 }

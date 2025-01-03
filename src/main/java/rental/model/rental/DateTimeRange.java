@@ -3,6 +3,7 @@ package rental.model.rental;
 import rental.Validation;
 
 import java.time.Instant;
+import java.util.Objects;
 
 public class DateTimeRange {
 
@@ -34,5 +35,21 @@ public class DateTimeRange {
         if (start.isAfter(end)) {
             throw new IllegalArgumentException("Start time must come before end time.");
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(start, end);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof DateTimeRange otherTimeRange
+                && equalsCasted(otherTimeRange);
+    }
+
+    private boolean equalsCasted(DateTimeRange other) {
+        return Objects.equals(start, other.start)
+                && Objects.equals(end, other.end);
     }
 }
