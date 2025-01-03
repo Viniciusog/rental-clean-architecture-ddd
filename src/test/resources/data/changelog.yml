@@ -21,11 +21,11 @@ databaseChangeLog:
             quotchar: '"'
   - changeSet:
       id: restart_auto_inc
-      author: "vinicius.guimaraes"
+      author: vinicius.guimaraes
       changes:
         - sql:
             dbms: h2
-            sql: | 
+            sql: |
               ALTER TABLE customer ALTER COLUMN id RESTART WITH (SELECT MAX(id) + 1 FROM customer);
               ALTER TABLE car ALTER COLUMN id RESTART WITH (SELECT MAX(id) + 1 FROM car);
   - changeSet:
@@ -37,9 +37,28 @@ databaseChangeLog:
             file: classpath:/data/rental.csv
             separator: ";"
             quotchar: '"'
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: customer_id
+                  type: BIGINT
+              - column:
+                  name: car_id
+                  type: BIGINT
+              - column:
+                  name: start_time
+                  type: TIMESTAMP
+              - column:
+                  name: end_time
+                  type: TIMESTAMP
+              - column:
+                  name: total_price
+                  type: NUMERIC(19, 2)
   - changeSet:
       id: restart_auto_inc_rental
-      author: "vinicius.guimaraes"
+      author: vinicius.guimaraes
       changes:
         - sql:
             dbms: h2
