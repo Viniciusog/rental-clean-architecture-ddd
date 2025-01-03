@@ -3,11 +3,12 @@ package rental.infrastructure.repository.rental;
 import jakarta.persistence.*;
 import rental.model.car.CarId;
 import rental.model.customer.CustomerId;
+import rental.model.rental.DateTimeRange;
 import rental.model.rental.Rental;
 import rental.model.rental.RentalId;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.Instant;
 
 @Entity(name = "Rental")
 @Table(name = "rental")
@@ -23,11 +24,11 @@ public class RentalEntity {
     @Column(name = "car_id", nullable = false)
     private Long carId;
 
-    @Column(name = "initial_date", nullable = false)
-    private LocalDate initialDate;
+    @Column(name = "start_time", nullable = false)
+    private Instant startTime;
 
-    @Column(name = "end_date", nullable = false)
-    private LocalDate endDate;
+    @Column(name = "end_time", nullable = false)
+    private Instant endTime;
 
     @Column(name = "total_price", nullable = false)
     private BigDecimal totalPrice;
@@ -40,8 +41,8 @@ public class RentalEntity {
         this.id = rental.id() == null ? null : rental.id().value();
         this.customerId = rental.customerId().value();
         this.carId = rental.carId().value();
-        this.initialDate = rental.initialDate();
-        this.endDate = rental.endDate();
+        this.startTime = rental.timeRange().start();
+        this.endTime = rental.timeRange().end();
         this.totalPrice = rental.totalPrice();
     }
 
@@ -50,8 +51,7 @@ public class RentalEntity {
                 .id(RentalId.of(id))
                 .carId(CarId.of(carId))
                 .customerId(CustomerId.of(customerId))
-                .initialDate(initialDate)
-                .endDate(endDate)
+                .timeRange(DateTimeRange.of(startTime, endTime))
                 .totalPrice(totalPrice)
                 .build();
     }

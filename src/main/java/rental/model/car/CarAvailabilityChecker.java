@@ -1,8 +1,7 @@
 package rental.model.car;
 
+import rental.model.rental.DateTimeRange;
 import rental.model.rental.RentalRepository;
-
-import java.time.LocalDate;
 
 public class CarAvailabilityChecker {
 
@@ -12,7 +11,7 @@ public class CarAvailabilityChecker {
         this.repository = repository;
     }
 
-    public boolean isCarAvailable(CarId carId, LocalDate initialDate, LocalDate endDate) {
-        return repository.getByCarIdAndDateInterval(carId, initialDate, endDate).isEmpty();
+    public boolean isCarAvailable(CarId carId, DateTimeRange timeRange) {
+        return repository.getByCarIdAndDateInterval(carId, timeRange).isEmpty();
     }
 }

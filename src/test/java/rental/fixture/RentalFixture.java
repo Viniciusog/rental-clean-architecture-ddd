@@ -1,5 +1,6 @@
 package rental.fixture;
 
+import rental.model.rental.DateTimeRange;
 import rental.model.rental.Rental;
 import rental.model.rental.RentalId;
 
@@ -28,6 +29,9 @@ public class RentalFixture {
                             2025, 1, 5, 6, 0, 0)
                     .toInstant(ZoneOffset.UTC));
 
+    public static final DateTimeRange RENTAL_TIME_RANGE =
+            DateTimeRange.of(RENTAL_START_INSTANT, RENTAL_END_INSTANT);
+
 
     public static Rental.Builder aRentalWithId() {
         return builder();
@@ -43,7 +47,6 @@ public class RentalFixture {
                 .carId(CAR_ID)
                 .customerId(CUSTOMER_ID)
                 .totalPrice(RENTAL_TOTAL_PRICE)
-                .initialDate(RENTAL_INITIAL_DATE)
-                .endDate(RENTAL_END_DATE);
+                .timeRange(RENTAL_TIME_RANGE);
     }
 }

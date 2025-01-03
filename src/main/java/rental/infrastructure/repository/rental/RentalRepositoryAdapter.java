@@ -5,11 +5,11 @@ import org.springframework.stereotype.Component;
 import rental.model.car.CarId;
 import rental.model.customer.CustomerId;
 import rental.model.exception.RentalNotFoundException;
+import rental.model.rental.DateTimeRange;
 import rental.model.rental.Rental;
 import rental.model.rental.RentalId;
 import rental.model.rental.RentalRepository;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,8 +51,8 @@ public class RentalRepositoryAdapter implements RentalRepository {
     }
 
     @Override
-    public List<Rental> getByCarIdAndDateInterval(CarId carId, LocalDate initialDate, LocalDate endDate) {
-        return repository.findByCarIdAndDateRange(carId.value(), initialDate, endDate)
+    public List<Rental> getByCarIdAndDateInterval(CarId carId, DateTimeRange timeRange) {
+        return repository.findByCarIdAndDateRange(carId.value(), timeRange.start(), timeRange.end())
                 .stream()
                 .map(RentalEntity::toRental)
                 .toList();

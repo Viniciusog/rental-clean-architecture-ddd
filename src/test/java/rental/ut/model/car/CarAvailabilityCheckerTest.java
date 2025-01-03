@@ -29,24 +29,20 @@ public class CarAvailabilityCheckerTest {
 
     @Test
     void mustReturnTrueToCarAvailability() {
-        when(repository.getByCarIdAndDateInterval(
-                CAR_ID,
-                RentalFixture.RENTAL_INITIAL_DATE,
-                RentalFixture.RENTAL_END_DATE)).thenReturn(List.of());
+        when(repository.getByCarIdAndDateInterval(CAR_ID, RENTAL_TIME_RANGE))
+                .thenReturn(List.of());
 
-        boolean available = carAvailabilityChecker.isCarAvailable(CAR_ID, RENTAL_INITIAL_DATE, RENTAL_END_DATE);
+        boolean available = carAvailabilityChecker.isCarAvailable(CAR_ID, RENTAL_TIME_RANGE);
 
         assertThat(available, is(true));
     }
 
     @Test
     void mustReturnFalseToCarAvailability() {
-        when(repository.getByCarIdAndDateInterval(
-                CAR_ID,
-                RentalFixture.RENTAL_INITIAL_DATE,
-                RentalFixture.RENTAL_END_DATE)).thenReturn(List.of(aRentalWithId().build()));
+        when(repository.getByCarIdAndDateInterval(CAR_ID, RENTAL_TIME_RANGE))
+                .thenReturn(List.of(aRentalWithId().build()));
 
-        boolean available = carAvailabilityChecker.isCarAvailable(CAR_ID, RENTAL_INITIAL_DATE, RENTAL_END_DATE);
+        boolean available = carAvailabilityChecker.isCarAvailable(CAR_ID, RENTAL_TIME_RANGE);
 
         assertThat(available, is(false));
     }

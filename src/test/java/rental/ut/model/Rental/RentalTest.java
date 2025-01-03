@@ -1,6 +1,5 @@
 package rental.ut.model.Rental;
 
-import net.bytebuddy.asm.Advice;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Test;
 import rental.model.car.CarId;
@@ -10,12 +9,12 @@ import rental.model.rental.RentalId;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static rental.fixture.RentalFixture.RENTAL_TIME_RANGE;
 
 public class RentalTest {
 
@@ -26,8 +25,7 @@ public class RentalTest {
         assertThat(rental.id(), is(nullValue()));
         assertThat(rental.customerId(), is(CUSTOMER_ID));
         assertThat(rental.carId(), is(CAR_ID));
-        assertThat(rental.initialDate(), is(INITIAL_DATE));
-        assertThat(rental.endDate(), is(END_DATE));
+        assertThat(rental.timeRange(), is(RENTAL_TIME_RANGE));
         assertThat(rental.totalPrice(), is(TOTAL_PRICE.setScale(2, RoundingMode.HALF_EVEN)));
     }
 
@@ -69,23 +67,13 @@ public class RentalTest {
     }
 
     @Test
-    void throwsExceptionWhenCreatingWithNullInitialDate() {
-        Rental.Builder builder = aBuilderWithId().initialDate(null);
+    void throwsExceptionWhenCreatingWithNullTimeRange() {
+        Rental.Builder builder = aBuilderWithId().timeRange(null);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 builder::build);
 
-        assertThat(exception.getMessage(), is("initialDate is required"));
-    }
-
-    @Test
-    void throwsExceptionWhenCreatingWithNullEndDate() {
-        Rental.Builder builder = aBuilderWithId().endDate(null);
-
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                builder::build);
-
-        assertThat(exception.getMessage(), is("endDate is required"));
+        assertThat(exception.getMessage(), is("timeRange is required"));
     }
 
     @Test
@@ -96,18 +84,6 @@ public class RentalTest {
                 builder::build);
 
         assertThat(exception.getMessage(), is("totalPrice is required"));
-    }
-
-    @Test
-    void throwsExceptionWhenCreatingWithInitialDateGreaterThanEndDate() {
-        Rental.Builder builder = aBuilderWithId()
-                .initialDate(LocalDate.of(2024, 1, 30))
-                .endDate(LocalDate.of(2024, 1, 20));
-
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                builder::build);
-
-        assertThat(exception.getMessage(), is("initialDate must be less than or equal to endDate"));
     }
 
     @Test
@@ -133,15 +109,13 @@ public class RentalTest {
         return Rental.builder()
                 .customerId(CUSTOMER_ID)
                 .carId(CAR_ID)
-                .initialDate(INITIAL_DATE)
-                .endDate(END_DATE)
+                .timeRange(RENTAL_TIME_RANGE)
                 .totalPrice(TOTAL_PRICE);
     }
 
     private static final RentalId RENTAL_ID = RentalId.of(1L);
     private static final CustomerId CUSTOMER_ID = CustomerId.of(2L);
     private static final CarId CAR_ID = CarId.of(3L);
-    private static final LocalDate INITIAL_DATE = LocalDate.of(2024, 10, 1);
-    private static final LocalDate END_DATE = LocalDate.of(2024, 10, 5);
     private static final BigDecimal TOTAL_PRICE = BigDecimal.valueOf(500L);
+
 }

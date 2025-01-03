@@ -14,18 +14,15 @@ public class Rental {
     private RentalId id;
     private CustomerId customerId;
     private CarId carId;
-    private final LocalDate initialDate;
-    private final LocalDate endDate;
+    private DateTimeRange timeRange;
     private final BigDecimal totalPrice;
 
     public Rental(Builder builder) {
         this.id = builder.id;
         this.customerId = Validation.required(builder.customerId, "customerId is required");
         this.carId = Validation.required(builder.carId, "carId is required");
-        this.initialDate = Validation.required(builder.initialDate, "initialDate is required");
-        this.endDate = Validation.required(builder.endDate, "endDate is required");
+        this.timeRange = Validation.required(builder.timeRange, "timeRange is required");
         this.totalPrice = Validation.required(builder.totalPrice, "totalPrice is required");
-        validateDates();
         validateTotalPrice();
     }
 
@@ -45,27 +42,18 @@ public class Rental {
         return carId;
     }
 
-    public LocalDate initialDate() {
-        return initialDate;
-    }
-
-    public LocalDate endDate() {
-        return endDate;
+    public DateTimeRange timeRange() {
+        return timeRange;
     }
 
     public BigDecimal totalPrice() {
         return totalPrice.setScale(2, RoundingMode.HALF_EVEN);
     }
 
-    private void validateDates() {
-        if (initialDate.isAfter(endDate)) {
-            throw new IllegalArgumentException("initialDate must be less than or equal to endDate");
-        }
-    }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, customerId, carId, initialDate, endDate, totalPrice());
+        return Objects.hash(id, customerId, carId, timeRange, totalPrice());
     }
 
     @Override
@@ -78,8 +66,7 @@ public class Rental {
         return Objects.equals(id, other.id)
                 && Objects.equals(customerId, other.customerId)
                 && Objects.equals(carId, other.carId)
-                && Objects.equals(initialDate, other.initialDate)
-                && Objects.equals(endDate, other.endDate)
+                && Objects.equals(timeRange, other.timeRange)
                 && Objects.equals(totalPrice(), other.totalPrice());
     }
 
@@ -97,8 +84,7 @@ public class Rental {
         private RentalId id;
         private CustomerId customerId;
         private CarId carId;
-        private LocalDate initialDate;
-        private LocalDate endDate;
+        private DateTimeRange timeRange;
         private BigDecimal totalPrice;
 
         private Builder() {
@@ -120,15 +106,11 @@ public class Rental {
             return this;
         }
 
-        public Builder initialDate(LocalDate initialDate) {
-            this.initialDate = initialDate;
+        public Builder timeRange(DateTimeRange timeRange) {
+            this.timeRange = timeRange;
             return this;
         }
 
-        public Builder endDate(LocalDate endDate) {
-            this.endDate = endDate;
-            return this;
-        }
 
         public Builder totalPrice(BigDecimal totalPrice) {
             this.totalPrice = totalPrice;

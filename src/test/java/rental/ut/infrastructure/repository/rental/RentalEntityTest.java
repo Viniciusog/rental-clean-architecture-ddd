@@ -13,6 +13,7 @@ import java.time.LocalDate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static rental.fixture.RentalFixture.RENTAL_TIME_RANGE;
 
 public class RentalEntityTest {
 
@@ -22,8 +23,7 @@ public class RentalEntityTest {
                 .id(RentalId.of(1L))
                 .customerId(CustomerId.of(1L))
                 .carId(CarId.of(123L))
-                .initialDate(LocalDate.of(2025, 01, 01))
-                .endDate(LocalDate.of(2025, 01, 05))
+                .timeRange(RENTAL_TIME_RANGE)
                 .totalPrice(BigDecimal.valueOf(200.00D))
                 .build();
 

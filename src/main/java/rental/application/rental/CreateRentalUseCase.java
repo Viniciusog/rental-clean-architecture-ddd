@@ -1,44 +1,44 @@
 package rental.application.rental;
 
-import org.apache.commons.collections4.bidimap.AbstractBidiMapDecorator;
 import rental.application.AppTransaction;
 import rental.model.car.CarAvailabilityChecker;
 import rental.model.car.CarId;
-import rental.model.car.CarRepository;
 import rental.model.customer.CustomerId;
 import rental.model.exception.CarNotAvailableException;
-import rental.model.rental.Rental;
-import rental.model.rental.RentalId;
-import rental.model.rental.RentalRepository;
+import rental.model.rental.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 public class CreateRentalUseCase {
 
     private AppTransaction transaction;
     private RentalRepository repository;
     private CarAvailabilityChecker carAvailabilityChecker;
+    private RentalPriceCalculator rentalPriceCalculator;
 
-    public CreateRentalUseCase(AppTransaction transaction, RentalRepository repository, CarAvailabilityChecker carAvailabilityChecker) {
+    public CreateRentalUseCase(AppTransaction transaction,
+                               RentalRepository repository,
+                               CarAvailabilityChecker carAvailabilityChecker,
+                               RentalPriceCalculator rentalPriceCalculator) {
         this.transaction = transaction;
         this.repository = repository;
         this.carAvailabilityChecker = carAvailabilityChecker;
+        this.rentalPriceCalculator = rentalPriceCalculator;
     }
 
-    public RentalId execute(CustomerId customerId, CarId carId,
-                            LocalDate initialDate, LocalDate endDate,
-                            BigDecimal totalPrice) {
+    public RentalId execute(CustomerId customerId,
+                            CarId carId,
+                            DateTimeRange timeRange) {
 
-        if (!carAvailabilityChecker.isCarAvailable(carId, initialDate, endDate)) {
+        if (!carAvailabilityChecker.isCarAvailable(carId, timeRange)) {
             throw new CarNotAvailableException(carId);
         }
+        BigDecimal calculatedRentalPrice = rentalPriceCalculator.execute(carId, timeRange);
         Rental rental = Rental.builder()
                 .carId(carId)
                 .customerId(customerId)
-                .initialDate(initialDate)
-                .endDate(endDate)
-                .totalPrice(totalPrice)
+                .timeRange(timeRange)
+                .totalPrice(calculatedRentalPrice)
                 .build();
 
         transaction.execute(() -> {
