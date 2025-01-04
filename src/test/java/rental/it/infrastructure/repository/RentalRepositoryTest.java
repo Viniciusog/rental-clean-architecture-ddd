@@ -19,6 +19,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -47,6 +48,22 @@ public class RentalRepositoryTest {
 
         assertThat(rental, is(rentalRetrieved));
         assertThat(id, is(rental.id()));
+    }
+
+    @Test
+    void mustUpdateSuccessfully() {
+        Rental rental = repository.getById(RentalId.of(1L)).orElseThrow();
+        DateTimeRange newDateTimeRange = DateTimeRange.of(
+                LocalDateTime.of(2025, 2, 1, 6, 0, 0).toInstant(ZoneOffset.UTC),
+                LocalDateTime.of(2025, 2, 10, 6, 0, 0).toInstant(ZoneOffset.UTC)
+        );
+        BigDecimal newTotalPrice = BigDecimal.valueOf(1000.00);
+        rental.update(newDateTimeRange, newTotalPrice);
+
+        repository.save(rental);
+        Rental retrieved = repository.getById(RentalId.of(1L)).orElseThrow();
+
+        assertThat(retrieved, is(rental));
     }
 
     @Test
