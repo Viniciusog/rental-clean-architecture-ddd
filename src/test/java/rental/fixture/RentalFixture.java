@@ -15,7 +15,7 @@ import static rental.fixture.CustomerFixture.CUSTOMER_ID;
 
 public class RentalFixture {
 
-    public static final Long RENTAL_ID = 123L;
+    public static final RentalId RENTAL_ID = RentalId.of(123L);
     public static final BigDecimal RENTAL_TOTAL_PRICE = BigDecimal.valueOf(500.00);
     public static final LocalDate RENTAL_INITIAL_DATE = LocalDate.of(2025, 01, 01);
     public static final LocalDate RENTAL_END_DATE = LocalDate.of(2025, 01, 05);
@@ -43,7 +43,7 @@ public class RentalFixture {
 
     public static Rental.Builder builder() {
         return Rental.builder()
-                .id(RentalId.of(RENTAL_ID))
+                .id(RENTAL_ID)
                 .carId(CAR_ID)
                 .customerId(CUSTOMER_ID)
                 .totalPrice(RENTAL_TOTAL_PRICE)
