@@ -5,14 +5,15 @@ import org.junit.jupiter.api.Test;
 import rental.application.rental.GetAllRentalUseCase;
 import rental.application.rental.GetRentalByIdUseCase;
 import rental.model.rental.Rental;
+import rental.model.rental.RentalId;
 import rental.model.rental.RentalRepository;
 
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static rental.fixture.RentalFixture.aRentalWithId;
 
 public class GetAllRentalUseCaseTest {
@@ -28,11 +29,16 @@ public class GetAllRentalUseCaseTest {
 
     @Test
     void mustGetallRentals() {
-        List<Rental> expected = List.of(aRentalWithId().build());
-        when(repository.getAll()).thenReturn(expected);
+        List<Rental> expectedRentals = List.of(
+                aRentalWithId().id(RentalId.of(1L)).build(),
+                aRentalWithId().id(RentalId.of(2L)).build(),
+                aRentalWithId().id(RentalId.of(3L)).build()
+        );
+        when(repository.getAll()).thenReturn(expectedRentals);
 
         List<Rental> retrievedRentals = useCase.execute();
 
-        assertThat(retrievedRentals, is(expected));
+        verify(repository).getAll();
+        assertThat(retrievedRentals, containsInAnyOrder(expectedRentals.toArray()));
     }
 }
