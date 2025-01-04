@@ -15,15 +15,16 @@ public class Rental {
     private CustomerId customerId;
     private CarId carId;
     private DateTimeRange timeRange;
-    private final BigDecimal totalPrice;
+    private BigDecimal totalPrice;
 
     public Rental(Builder builder) {
         this.id = builder.id;
         this.customerId = Validation.required(builder.customerId, "customerId is required");
         this.carId = Validation.required(builder.carId, "carId is required");
         this.timeRange = Validation.required(builder.timeRange, "timeRange is required");
-        this.totalPrice = Validation.required(builder.totalPrice, "totalPrice is required");
-        validateTotalPrice();
+        BigDecimal totalPrice = Validation.required(builder.totalPrice, "totalPrice is required");
+        validateTotalPrice(totalPrice);
+        this.totalPrice = totalPrice;
     }
 
     public void created(RentalId id) {
@@ -50,6 +51,13 @@ public class Rental {
         return totalPrice.setScale(2, RoundingMode.HALF_EVEN);
     }
 
+    public void update(DateTimeRange timeRange, BigDecimal totalPrice) {
+        BigDecimal newTotalPrice = Validation.required(totalPrice, "totalPrice is required");
+        DateTimeRange newTimeRange = Validation.required(timeRange, "timeRange is required");
+        validateTotalPrice(newTotalPrice);
+        this.totalPrice = newTotalPrice;
+        this.timeRange = newTimeRange;
+    }
 
     @Override
     public int hashCode() {
@@ -70,8 +78,8 @@ public class Rental {
                 && Objects.equals(totalPrice(), other.totalPrice());
     }
 
-    private void validateTotalPrice() {
-        if (this.totalPrice.compareTo(BigDecimal.ZERO) < 0) {
+    private void validateTotalPrice(BigDecimal totalPrice) {
+        if (totalPrice.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("totalPrice cannot be negative");
         }
     }

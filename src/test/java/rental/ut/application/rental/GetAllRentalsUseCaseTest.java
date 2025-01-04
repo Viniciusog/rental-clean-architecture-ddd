@@ -2,8 +2,7 @@ package rental.ut.application.rental;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import rental.application.rental.GetAllRentalUseCase;
-import rental.application.rental.GetRentalByIdUseCase;
+import rental.application.rental.GetAllRentalsUseCase;
 import rental.model.rental.Rental;
 import rental.model.rental.RentalId;
 import rental.model.rental.RentalRepository;
@@ -16,15 +15,15 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 import static rental.fixture.RentalFixture.aRentalWithId;
 
-public class GetAllRentalUseCaseTest {
+public class GetAllRentalsUseCaseTest {
 
     private RentalRepository repository;
-    private GetAllRentalUseCase useCase;
+    private GetAllRentalsUseCase useCase;
 
     @BeforeEach
     void beforeEach() {
         repository = mock(RentalRepository.class);
-        useCase = new GetAllRentalUseCase(repository);
+        useCase = new GetAllRentalsUseCase(repository);
     }
 
     @Test

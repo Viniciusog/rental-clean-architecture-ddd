@@ -5,11 +5,11 @@ import rental.model.rental.RentalRepository;
 
 import java.util.List;
 
-public class GetAllRentalUseCase {
+public class GetAllRentalsUseCase {
 
     private RentalRepository repository;
 
-    public GetAllRentalUseCase(RentalRepository repository) {
+    public GetAllRentalsUseCase(RentalRepository repository) {
         this.repository = repository;
     }
 
