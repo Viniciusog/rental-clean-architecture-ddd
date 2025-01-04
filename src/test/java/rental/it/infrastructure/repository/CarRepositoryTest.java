@@ -6,11 +6,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import rental.fixture.CarFixture;
 import rental.infrastructure.repository.car.CarRepositoryAdapter;
-import rental.model.car.Car;
-import rental.model.car.CarId;
-import rental.model.car.CarRepository;
+import rental.model.car.*;
 import rental.model.exception.CarNotFoundException;
 
+import java.math.BigDecimal;
+import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +24,32 @@ public class CarRepositoryTest {
 
     @Autowired
     private CarRepository repository;
+
+    @Test
+    void mustCreateCarSuccessfully() {
+        Car car = CarFixture.aCarWithoutId().build();
+
+        repository.save(car);
+
+        Car resultCar = repository.getById(car.id()).orElseThrow();
+
+        assertThat(car.id(), is(notNullValue()));
+        assertThat(resultCar, is(car));
+    }
+
+    @Test
+    void mustUpdateCarSuccessfully() {
+        Car car = repository.getById(CarId.of(1L)).orElseThrow();
+        Model newModel = new Model(new Make("New make"), "New model");
+        Year newYear = Year.of(2010);
+        BigDecimal newDailyPrice = BigDecimal.valueOf(150.00);
+        car.update(newModel, newYear, newDailyPrice);
+
+        repository.save(car);
+        Car retrieved = repository.getById(CarId.of(1L)).orElseThrow();
+
+        assertThat(retrieved, is(car));
+    }
 
     @Test
     void mustGetById() {
@@ -44,18 +70,6 @@ public class CarRepositoryTest {
         Optional<Car> car = repository.getById(carId);
 
         assertThat(car.isEmpty(), is(true));
-    }
-
-    @Test
-    void mustCreateCarSuccessfully() {
-        Car car = CarFixture.aCarWithoutId().build();
-
-        repository.save(car);
-
-        Car resultCar = repository.getById(car.id()).orElseThrow();
-
-        assertThat(car.id(), is(notNullValue()));
-        assertThat(resultCar, is(car));
     }
 
     @Test
