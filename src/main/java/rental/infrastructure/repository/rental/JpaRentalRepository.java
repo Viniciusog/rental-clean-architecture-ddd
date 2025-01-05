@@ -14,7 +14,7 @@ public interface JpaRentalRepository extends JpaRepository<RentalEntity, Long> {
     @Query("SELECT r from Rental r WHERE r.customerId = :customerId")
     List<RentalEntity> findByCustomerId(@Param("customerId") Long customerId);
 
-    @Query("SELECT r FROM Rental r WHERE r.carId = :carId AND r.startTime >= :startTime AND r.endTime <= :endTime")
+    @Query("SELECT r FROM Rental r WHERE r.carId = :carId AND NOT (r.endTime < :startTime OR r.startTime > :endTime)")
     List<RentalEntity> findByCarIdAndDateRange(
             @Param("carId") Long carId,
             @Param("startTime") Instant startTime,
