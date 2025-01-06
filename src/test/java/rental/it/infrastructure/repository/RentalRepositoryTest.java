@@ -113,7 +113,7 @@ public class RentalRepositoryTest {
                 LocalDateTime.of(2025, 2, 1, 9, 59, 59).toInstant(ZoneOffset.UTC)
         );
 
-        List<Rental> rentals = repository.getByCarIdAndDateInterval(CarId.of(3L), timeRangeToSearch);
+        List<Rental> rentals = repository.getByCarIdAndTimeRange(CarId.of(3L), timeRangeToSearch);
 
         assertThat(rentals.isEmpty(), is(true));
     }
@@ -128,7 +128,7 @@ public class RentalRepositoryTest {
                 LocalDateTime.of(2025, 2, 1, 10, 0, 0).toInstant(ZoneOffset.UTC)
         );
 
-        List<Rental> rentals = repository.getByCarIdAndDateInterval(CarId.of(3L), timeRangeToSearch);
+        List<Rental> rentals = repository.getByCarIdAndTimeRange(CarId.of(3L), timeRangeToSearch);
 
         assertThat(rentals, is(expectedRentals));
     }
@@ -143,7 +143,7 @@ public class RentalRepositoryTest {
                 LocalDateTime.of(2025, 2, 10, 10, 0, 0).toInstant(ZoneOffset.UTC)
         );
 
-        List<Rental> rentals = repository.getByCarIdAndDateInterval(CarId.of(3L), timeRangeToSearch);
+        List<Rental> rentals = repository.getByCarIdAndTimeRange(CarId.of(3L), timeRangeToSearch);
 
         assertThat(rentals, is(expectedRentals));
     }
@@ -158,7 +158,7 @@ public class RentalRepositoryTest {
                 LocalDateTime.of(2025, 2, 10, 9, 59, 59).toInstant(ZoneOffset.UTC)
         );
 
-        List<Rental> rentals = repository.getByCarIdAndDateInterval(CarId.of(3L), timeRangeToSearch);
+        List<Rental> rentals = repository.getByCarIdAndTimeRange(CarId.of(3L), timeRangeToSearch);
 
         assertThat(rentals, is(expectedRentals));
     }
@@ -173,7 +173,7 @@ public class RentalRepositoryTest {
                 LocalDateTime.of(2025, 2, 11, 6, 0, 0).toInstant(ZoneOffset.UTC)
         );
 
-        List<Rental> rentals = repository.getByCarIdAndDateInterval(CarId.of(3L), timeRangeToSearch);
+        List<Rental> rentals = repository.getByCarIdAndTimeRange(CarId.of(3L), timeRangeToSearch);
 
         assertThat(rentals, is(expectedRentals));
     }
@@ -188,7 +188,7 @@ public class RentalRepositoryTest {
                 LocalDateTime.of(2025, 2, 11, 6, 0, 0).toInstant(ZoneOffset.UTC)
         );
 
-        List<Rental> rentals = repository.getByCarIdAndDateInterval(CarId.of(3L), timeRangeToSearch);
+        List<Rental> rentals = repository.getByCarIdAndTimeRange(CarId.of(3L), timeRangeToSearch);
 
         assertThat(rentals, is(expectedRentals));
     }

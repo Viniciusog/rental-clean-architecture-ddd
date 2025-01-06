@@ -32,7 +32,7 @@ public class CarAvailabilityCheckerTest {
 
     @Test
     void mustReturnTrueToCarAvailability() {
-        when(repository.getByCarIdAndDateInterval(CAR_ID, RENTAL_TIME_RANGE))
+        when(repository.getByCarIdAndTimeRange(CAR_ID, RENTAL_TIME_RANGE))
                 .thenReturn(List.of());
 
         boolean available = carAvailabilityChecker.isCarAvailable(CAR_ID, RENTAL_TIME_RANGE);
@@ -42,7 +42,7 @@ public class CarAvailabilityCheckerTest {
 
     @Test
     void mustReturnFalseToCarAvailability() {
-        when(repository.getByCarIdAndDateInterval(CAR_ID, RENTAL_TIME_RANGE))
+        when(repository.getByCarIdAndTimeRange(CAR_ID, RENTAL_TIME_RANGE))
                 .thenReturn(List.of(aRentalWithId().build()));
 
         boolean available = carAvailabilityChecker.isCarAvailable(CAR_ID, RENTAL_TIME_RANGE);
@@ -74,7 +74,7 @@ public class CarAvailabilityCheckerTest {
                 aRentalWithId().id(RentalId.of(1L)).build(),
                 aRentalWithId().id(RentalId.of(2L)).build()
         );
-        when(repository.getByCarIdAndDateInterval(CAR_ID, RENTAL_TIME_RANGE)).thenReturn(expectedRentals);
+        when(repository.getByCarIdAndTimeRange(CAR_ID, RENTAL_TIME_RANGE)).thenReturn(expectedRentals);
 
         CarNotAvailableException exception = assertThrows(CarNotAvailableException.class, () -> {
             carAvailabilityChecker.carIsAvailableOrThrowException(CAR_ID, RENTAL_TIME_RANGE);
@@ -89,7 +89,7 @@ public class CarAvailabilityCheckerTest {
     @Test
     void doesNotThrowExceptionWhenCarIsAvailable() {
         List<Rental> expectedRentals = List.of();
-        when(repository.getByCarIdAndDateInterval(CAR_ID, RENTAL_TIME_RANGE)).thenReturn(expectedRentals);
+        when(repository.getByCarIdAndTimeRange(CAR_ID, RENTAL_TIME_RANGE)).thenReturn(expectedRentals);
 
         assertDoesNotThrow(() -> {
             carAvailabilityChecker.carIsAvailableOrThrowException(CAR_ID, RENTAL_TIME_RANGE);

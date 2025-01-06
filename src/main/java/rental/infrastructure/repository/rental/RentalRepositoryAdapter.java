@@ -51,7 +51,7 @@ public class RentalRepositoryAdapter implements RentalRepository {
     }
 
     @Override
-    public List<Rental> getByCarIdAndDateInterval(CarId carId, DateTimeRange timeRange) {
+    public List<Rental> getByCarIdAndTimeRange(CarId carId, DateTimeRange timeRange) {
         return repository.findByCarIdAndDateRange(carId.value(), timeRange.start(), timeRange.end())
                 .stream()
                 .map(RentalEntity::toRental)

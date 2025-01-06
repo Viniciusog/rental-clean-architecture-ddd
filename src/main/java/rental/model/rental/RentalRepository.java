@@ -12,6 +12,6 @@ public interface RentalRepository {
     Optional<Rental> getById(RentalId rentalId);
     List<Rental> getAll();
     List<Rental> getByCustomerId(CustomerId id);
-    List<Rental> getByCarIdAndDateInterval(CarId carId, DateTimeRange timeRange);
+    List<Rental> getByCarIdAndTimeRange(CarId carId, DateTimeRange timeRange);
     boolean existsByCarIdAndTimeRange(CarId carId, DateTimeRange timeRange);
 }
