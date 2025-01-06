@@ -1,5 +1,7 @@
 package rental.application.rental;
 
+import rental.model.car.CarId;
+import rental.model.rental.DateTimeRange;
 import rental.model.rental.Rental;
 import rental.model.rental.RentalRepository;
 
@@ -13,7 +15,7 @@ public class GetRentalsByCarIdAndTimeRangeUseCase {
         this.repository = repository;
     }
 
-    public List<Rental> execute() {
-        return List.of();
+    public List<Rental> execute(CarId carId, DateTimeRange timeRange) {
+        return repository.getByCarIdAndTimeRange(carId, timeRange);
     }
 }
