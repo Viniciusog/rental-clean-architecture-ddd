@@ -9,24 +9,17 @@ import rental.fixture.AppTransactionFixture;
 import rental.model.car.CarAvailabilityChecker;
 import rental.model.exception.CarNotAvailableException;
 import rental.model.exception.RentalNotFoundException;
-import rental.model.rental.DateTimeRange;
 import rental.model.rental.Rental;
 import rental.model.rental.RentalPriceCalculator;
 import rental.model.rental.RentalRepository;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Optional;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static rental.fixture.CarFixture.CAR_ID;
-import static rental.fixture.RentalFixture.RENTAL_ID;
-import static rental.fixture.RentalFixture.RENTAL_TIME_RANGE;
+import static rental.fixture.RentalFixture.*;
 
 public class UpdateRentalUseCaseTest {
 
@@ -52,18 +45,13 @@ public class UpdateRentalUseCaseTest {
         Rental rental = mock(Rental.class);
         when(rental.carId()).thenReturn(CAR_ID);
         when(rentalRepository.getById(RENTAL_ID)).thenReturn(Optional.of(rental));
-        DateTimeRange newTimeRange = DateTimeRange.of(
-                LocalDateTime.of(2025, 2, 10, 6, 0, 0).toInstant(ZoneOffset.UTC),
-                LocalDateTime.of(2025, 2, 20, 6, 0, 0).toInstant(ZoneOffset.UTC)
-        );
-        BigDecimal newTotalPrice = BigDecimal.valueOf(1000.00);
-        when(carAvailabilityChecker.isCarAvailable(CAR_ID, newTimeRange)).thenReturn(true);
-        when(rentalPriceCalculator.execute(CAR_ID, newTimeRange)).thenReturn(newTotalPrice);
+        doNothing().when(carAvailabilityChecker).carIsAvailableOrThrowException(CAR_ID, RENTAL_TIME_RANGE);
+        when(rentalPriceCalculator.execute(CAR_ID, RENTAL_TIME_RANGE)).thenReturn(RENTAL_TOTAL_PRICE);
 
-        useCase.execute(RENTAL_ID, newTimeRange);
+        useCase.execute(RENTAL_ID, RENTAL_TIME_RANGE);
 
         InOrder inOrder = inOrder(rental, rentalRepository);
-        inOrder.verify(rental).update(newTimeRange, newTotalPrice);
+        inOrder.verify(rental).update(RENTAL_TIME_RANGE, RENTAL_TOTAL_PRICE);
         inOrder.verify(rentalRepository).save(rental);
     }
 
@@ -84,7 +72,9 @@ public class UpdateRentalUseCaseTest {
         Rental rental = mock(Rental.class);
         when(rental.carId()).thenReturn(CAR_ID);
         when(rentalRepository.getById(RENTAL_ID)).thenReturn(Optional.of(rental));
-        when(carAvailabilityChecker.isCarAvailable(CAR_ID, RENTAL_TIME_RANGE)).thenReturn(false);
+        doThrow(new CarNotAvailableException(CAR_ID, RENTAL_TIME_RANGE))
+                .when(carAvailabilityChecker)
+                .carIsAvailableOrThrowException(CAR_ID, RENTAL_TIME_RANGE);
 
         CarNotAvailableException exception = assertThrows(CarNotAvailableException.class, () -> {
            useCase.execute(RENTAL_ID, RENTAL_TIME_RANGE);
@@ -100,12 +90,15 @@ public class UpdateRentalUseCaseTest {
         Rental rental = mock(Rental.class);
         when(rental.carId()).thenReturn(CAR_ID);
         when(rentalRepository.getById(RENTAL_ID)).thenReturn(Optional.of(rental));
-        doThrow(IllegalArgumentException.class).when(carAvailabilityChecker).isCarAvailable(CAR_ID, null);
+        doThrow(new IllegalArgumentException("timeRange is required"))
+                .when(carAvailabilityChecker)
+                .carIsAvailableOrThrowException(CAR_ID, null);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             useCase.execute(RENTAL_ID, null);
         });
 
+        assertThat(exception.getMessage(), is("timeRange is required"));
         verify(rentalRepository, never()).save(any());
     }
 }

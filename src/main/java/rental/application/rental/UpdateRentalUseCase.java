@@ -30,9 +30,7 @@ public class UpdateRentalUseCase {
             Rental rental = rentalRepository.getById(rentalId)
                     .orElseThrow(() -> new RentalNotFoundException(rentalId));
 
-            if (!carAvailabilityChecker.isCarAvailable(rental.carId(), newTimeRange)) {
-                throw new CarNotAvailableException(rental.carId(), newTimeRange);
-            }
+            carAvailabilityChecker.carIsAvailableOrThrowException(rental.carId(), newTimeRange);
 
             BigDecimal newRentalTotalPrice = rentalPriceCalculator.execute(rental.carId(), newTimeRange);
 
