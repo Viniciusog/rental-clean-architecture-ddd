@@ -6,7 +6,6 @@ import rental.model.customer.Customer;
 import rental.model.customer.CustomerId;
 import rental.model.customer.CustomerName;
 import rental.model.customer.CustomerRepository;
-import rental.model.exception.CarNotFoundException;
 import rental.model.exception.CustomerNotFoundException;
 
 public class UpdateCustomerUseCase {

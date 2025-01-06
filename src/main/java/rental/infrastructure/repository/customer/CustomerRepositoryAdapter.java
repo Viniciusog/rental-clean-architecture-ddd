@@ -1,10 +1,7 @@
 package rental.infrastructure.repository.customer;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
-import rental.infrastructure.repository.car.JpaCarRepository;
-import rental.model.car.CarId;
 import rental.model.customer.Customer;
 import rental.model.customer.CustomerFilter;
 import rental.model.customer.CustomerId;

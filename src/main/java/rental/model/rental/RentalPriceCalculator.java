@@ -7,7 +7,6 @@ import rental.model.exception.CarNotFoundException;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 public class RentalPriceCalculator {

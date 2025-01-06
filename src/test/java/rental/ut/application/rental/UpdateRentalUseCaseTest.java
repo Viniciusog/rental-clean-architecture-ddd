@@ -7,7 +7,6 @@ import rental.application.AppTransaction;
 import rental.application.rental.UpdateRentalUseCase;
 import rental.fixture.AppTransactionFixture;
 import rental.model.car.CarAvailabilityChecker;
-import rental.model.car.CarRepository;
 import rental.model.exception.CarNotAvailableException;
 import rental.model.exception.RentalNotFoundException;
 import rental.model.rental.DateTimeRange;
@@ -91,7 +90,8 @@ public class UpdateRentalUseCaseTest {
            useCase.execute(RENTAL_ID, RENTAL_TIME_RANGE);
         });
 
-        assertThat(exception.getMessage(), is("Car with id: " + CAR_ID.value() + " is not available to rent."));
+        assertThat(exception.getMessage(), is(String.format("Car with id: %s is not available for the given time range: %s to %s",
+                CAR_ID.value(), RENTAL_TIME_RANGE.start(), RENTAL_TIME_RANGE.end())));
         verify(rentalRepository, never()).save(any());
     }
 

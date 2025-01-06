@@ -1,22 +1,13 @@
 package rental.ut.model.car;
 
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import rental.fixture.RentalFixture;
 import rental.model.car.CarAvailabilityChecker;
-import rental.model.car.CarId;
-import rental.model.customer.CustomerId;
 import rental.model.exception.CarNotAvailableException;
-import rental.model.rental.DateTimeRange;
 import rental.model.rental.Rental;
 import rental.model.rental.RentalId;
 import rental.model.rental.RentalRepository;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;

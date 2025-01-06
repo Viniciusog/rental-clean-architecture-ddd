@@ -3,7 +3,6 @@ package rental.application.customer;
 import rental.application.AppTransaction;
 import rental.model.Email;
 import rental.model.customer.Customer;
-import rental.model.customer.CustomerId;
 import rental.model.customer.CustomerName;
 import rental.model.customer.CustomerRepository;
 

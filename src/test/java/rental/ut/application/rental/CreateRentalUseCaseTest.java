@@ -12,8 +12,6 @@ import rental.model.rental.RentalId;
 import rental.model.rental.RentalPriceCalculator;
 import rental.model.rental.RentalRepository;
 
-import java.math.BigDecimal;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -73,5 +71,8 @@ public class CreateRentalUseCaseTest {
         });
 
         assertThat(exception.getMessage(),
-                is("Car with id: " + CAR_ID.value() + " is not available to rent."));    }
+                is(String.format("Car with id: %s is not available for the given time range: %s to %s",
+                        CAR_ID.value(), RENTAL_TIME_RANGE.start(), RENTAL_TIME_RANGE.end())));
+        verify(repository, never()).save(any());
+    }
 }

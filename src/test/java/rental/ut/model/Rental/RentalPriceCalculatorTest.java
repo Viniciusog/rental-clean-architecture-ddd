@@ -2,9 +2,6 @@ package rental.ut.model.Rental;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InOrder;
-import org.mockito.Mockito;
-import rental.model.car.Car;
 import rental.model.car.CarRepository;
 import rental.model.exception.CarNotFoundException;
 import rental.model.rental.DateTimeRange;
@@ -13,7 +10,6 @@ import rental.model.rental.RentalPriceCalculator;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Optional;

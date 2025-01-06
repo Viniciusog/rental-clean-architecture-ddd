@@ -2,7 +2,6 @@ package rental.application.rental;
 
 import rental.application.AppTransaction;
 import rental.model.car.CarAvailabilityChecker;
-import rental.model.car.CarRepository;
 import rental.model.exception.CarNotAvailableException;
 import rental.model.exception.RentalNotFoundException;
 import rental.model.rental.*;
@@ -32,7 +31,7 @@ public class UpdateRentalUseCase {
                     .orElseThrow(() -> new RentalNotFoundException(rentalId));
 
             if (!carAvailabilityChecker.isCarAvailable(rental.carId(), newTimeRange)) {
-                throw new CarNotAvailableException(rental.carId());
+                throw new CarNotAvailableException(rental.carId(), newTimeRange);
             }
 
             BigDecimal newRentalTotalPrice = rentalPriceCalculator.execute(rental.carId(), newTimeRange);

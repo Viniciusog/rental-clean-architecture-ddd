@@ -1,13 +1,10 @@
 package rental.ut.application.customer;
 
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.configuration.IMockitoConfiguration;
 import rental.application.AppTransaction;
 import rental.application.customer.DeleteCustomerUseCase;
 import rental.fixture.AppTransactionFixture;
-import rental.model.customer.CustomerId;
 import rental.model.customer.CustomerRepository;
 import rental.model.exception.CustomerNotFoundException;
 
