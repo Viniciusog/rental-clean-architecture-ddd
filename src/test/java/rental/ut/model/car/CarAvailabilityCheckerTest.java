@@ -2,6 +2,8 @@ package rental.ut.model.car;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import rental.model.car.CarAvailabilityChecker;
 import rental.model.exception.CarNotAvailableException;
 import rental.model.rental.Rental;
@@ -21,33 +23,24 @@ import static org.hamcrest.Matchers.is;
 
 public class CarAvailabilityCheckerTest {
 
-    private RentalRepository repository;
+    private RentalRepository rentalRepository;
     private CarAvailabilityChecker carAvailabilityChecker;
 
     @BeforeEach
     public void beforeEach() {
-        repository = mock(RentalRepository.class);
-        carAvailabilityChecker = new CarAvailabilityChecker(repository);
+        rentalRepository = mock(RentalRepository.class);
+        carAvailabilityChecker = new CarAvailabilityChecker(rentalRepository);
     }
 
-    @Test
-    void mustReturnTrueToCarAvailability() {
-        when(repository.getByCarIdAndTimeRange(CAR_ID, RENTAL_TIME_RANGE))
-                .thenReturn(List.of());
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    void mustReturnTrueAvailabilitySuccessfully(boolean expectedResult) {
+        when(rentalRepository.existsByCarIdAndTimeRange(CAR_ID, RENTAL_TIME_RANGE))
+                .thenReturn(expectedResult);
 
         boolean available = carAvailabilityChecker.isCarAvailable(CAR_ID, RENTAL_TIME_RANGE);
 
-        assertThat(available, is(true));
-    }
-
-    @Test
-    void mustReturnFalseToCarAvailability() {
-        when(repository.getByCarIdAndTimeRange(CAR_ID, RENTAL_TIME_RANGE))
-                .thenReturn(List.of(aRentalWithId().build()));
-
-        boolean available = carAvailabilityChecker.isCarAvailable(CAR_ID, RENTAL_TIME_RANGE);
-
-        assertThat(available, is(false));
+        assertThat(available, is(expectedResult));
     }
 
     @Test
@@ -60,7 +53,7 @@ public class CarAvailabilityCheckerTest {
     }
 
     @Test
-    void throwsExceptionWhemTimeRangeIsNull() {
+    void throwsExceptionWhenTimeRangeIsNull() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             carAvailabilityChecker.isCarAvailable(CAR_ID, null);
         });
@@ -70,11 +63,7 @@ public class CarAvailabilityCheckerTest {
 
     @Test
     void mustThrowExceptionWhenCarIsNotAvailable() {
-        List<Rental> expectedRentals = List.of(
-                aRentalWithId().id(RentalId.of(1L)).build(),
-                aRentalWithId().id(RentalId.of(2L)).build()
-        );
-        when(repository.getByCarIdAndTimeRange(CAR_ID, RENTAL_TIME_RANGE)).thenReturn(expectedRentals);
+        when(rentalRepository.existsByCarIdAndTimeRange(CAR_ID, RENTAL_TIME_RANGE)).thenReturn(false);
 
         CarNotAvailableException exception = assertThrows(CarNotAvailableException.class, () -> {
             carAvailabilityChecker.carIsAvailableOrThrowException(CAR_ID, RENTAL_TIME_RANGE);
@@ -88,8 +77,7 @@ public class CarAvailabilityCheckerTest {
 
     @Test
     void doesNotThrowExceptionWhenCarIsAvailable() {
-        List<Rental> expectedRentals = List.of();
-        when(repository.getByCarIdAndTimeRange(CAR_ID, RENTAL_TIME_RANGE)).thenReturn(expectedRentals);
+        when(rentalRepository.existsByCarIdAndTimeRange(CAR_ID, RENTAL_TIME_RANGE)).thenReturn(true);
 
         assertDoesNotThrow(() -> {
             carAvailabilityChecker.carIsAvailableOrThrowException(CAR_ID, RENTAL_TIME_RANGE);

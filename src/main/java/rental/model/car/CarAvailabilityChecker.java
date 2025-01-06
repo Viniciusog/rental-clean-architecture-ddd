@@ -16,7 +16,7 @@ public class CarAvailabilityChecker {
     public boolean isCarAvailable(CarId carId, DateTimeRange timeRange) {
         Validation.required(carId, "carId is required");
         Validation.required(timeRange, "timeRange is required");
-        return repository.getByCarIdAndTimeRange(carId, timeRange).isEmpty();
+        return repository.existsByCarIdAndTimeRange(carId, timeRange);
     }
 
     public void carIsAvailableOrThrowException(CarId carId, DateTimeRange timeRange) {
