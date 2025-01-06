@@ -21,6 +21,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static rental.fixture.RentalFixture.RENTAL_TIME_RANGE;
 
@@ -193,7 +194,33 @@ public class RentalRepositoryTest {
         assertThat(rentals, is(expectedRentals));
     }
 
-    private Rental RENTAL_FEBRUARY_TEN_DAYS = Rental.builder()
+    @Test
+    void existsByCarIdAndTimeRangeReturnsTrue() {
+        CarId carId = CarId.of(3L);
+        DateTimeRange timeRange = DateTimeRange.of(
+                LocalDateTime.of(2025, 2, 1, 10, 0, 0).toInstant(ZoneOffset.UTC),
+                LocalDateTime.of(2025, 2, 5, 10, 0, 0).toInstant(ZoneOffset.UTC)
+        );
+
+        boolean result = repository.existsByCarIdAndTimeRange(carId, timeRange);
+
+        assertThat(result, is(true));
+    }
+
+    @Test
+    void existsByCarIdAndTimeRangeReturnsFalse() {
+        CarId carId = CarId.of(3L);
+        DateTimeRange timeRange = DateTimeRange.of(
+                LocalDateTime.of(2025, 1, 25, 10, 0, 0).toInstant(ZoneOffset.UTC),
+                LocalDateTime.of(2025, 2, 1, 9, 59, 59).toInstant(ZoneOffset.UTC)
+        );
+
+        boolean result = repository.existsByCarIdAndTimeRange(carId, timeRange);
+
+        assertThat(result, is(false));
+    }
+
+    private final Rental RENTAL_FEBRUARY_TEN_DAYS = Rental.builder()
             .id(RentalId.of(5L))
             .customerId(CustomerId.of(3L))
             .carId(CarId.of(3L))
@@ -202,6 +229,4 @@ public class RentalRepositoryTest {
                         LocalDateTime.of(2025, 2, 1, 10, 0, 0).toInstant(ZoneOffset.UTC),
                         LocalDateTime.of(2025, 2, 10, 10, 0, 0).toInstant(ZoneOffset.UTC)
                 )).build();
-
-
 }

@@ -57,4 +57,9 @@ public class RentalRepositoryAdapter implements RentalRepository {
                 .map(RentalEntity::toRental)
                 .toList();
     }
+
+    @Override
+    public boolean existsByCarIdAndTimeRange(CarId carId, DateTimeRange timeRange) {
+        return repository.existsByCarIdAndTimeRange(carId.value(), timeRange.start(), timeRange.end());
+    }
 }

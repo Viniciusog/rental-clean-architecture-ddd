@@ -19,4 +19,14 @@ public interface JpaRentalRepository extends JpaRepository<RentalEntity, Long> {
             @Param("carId") Long carId,
             @Param("startTime") Instant startTime,
             @Param("endTime") Instant endTime);
+
+    //    @Query(value = "SELECT CASE WHEN COUNT(*) > 0
+    //    THEN true ELSE false END FROM (SELECT 1 FROM Rental r WHERE r.car_id = :carId
+    //    AND r.date_range = :dateRange LIMIT 1) AS temp", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) > 0 FROM (SELECT 1 FROM Rental r " +
+            "WHERE r.car_id = :carId AND NOT (r.end_time < :startTime OR r.start_time > :endTime) LIMIT 1) AS subquery",
+            nativeQuery = true)
+    boolean existsByCarIdAndTimeRange(@Param("carId") Long carId,
+                                      @Param("startTime") Instant startTime,
+                                      @Param("endTime") Instant endTime);
 }
