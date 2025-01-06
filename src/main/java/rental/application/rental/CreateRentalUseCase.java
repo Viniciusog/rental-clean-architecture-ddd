@@ -30,10 +30,10 @@ public class CreateRentalUseCase {
                             CarId carId,
                             DateTimeRange timeRange) {
 
-        if (!carAvailabilityChecker.isCarAvailable(carId, timeRange)) {
-            throw new CarNotAvailableException(carId, timeRange);
-        }
+        carAvailabilityChecker.carIsAvailableOrThrowException(carId, timeRange);
+
         BigDecimal calculatedRentalPrice = rentalPriceCalculator.execute(carId, timeRange);
+
         Rental rental = Rental.builder()
                 .carId(carId)
                 .customerId(customerId)
