@@ -2,6 +2,7 @@ package rental.application.car;
 
 import rental.application.AppTransaction;
 import rental.model.car.Car;
+import rental.model.car.CarId;
 import rental.model.car.CarRepository;
 import rental.model.car.Model;
 
@@ -18,12 +19,13 @@ public class CreateCarUseCase {
         this.repository = repository;
     }
 
-    public void execute(Model model, Year year, BigDecimal dailyPrice) {
+    public CarId execute(Model model, Year year, BigDecimal dailyPrice) {
         Car car = Car.builder()
                 .model(model)
                 .year(year)
                 .dailyPrice(dailyPrice)
                 .build();
         transaction.execute(() -> repository.save(car));
+        return car.id();
     }
 }
