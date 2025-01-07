@@ -3,6 +3,7 @@ package rental.application.customer;
 import rental.application.AppTransaction;
 import rental.model.Email;
 import rental.model.customer.Customer;
+import rental.model.customer.CustomerId;
 import rental.model.customer.CustomerName;
 import rental.model.customer.CustomerRepository;
 
@@ -16,9 +17,11 @@ public class CreateCustomerUseCase {
         this.repository = repository;
     }
 
-    public void execute(CustomerName name, Email email) {
+    public CustomerId execute(CustomerName name, Email email) {
+        Customer customer = Customer.builder().name(name).email(email).build();
         transaction.execute(() -> {
-            repository.save(Customer.builder().name(name).email(email).build());
+            repository.save(customer);
         });
+        return customer.id();
     }
 }

@@ -2,17 +2,19 @@ package rental.ut.application.customer;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import rental.application.AppTransaction;
 import rental.application.customer.CreateCustomerUseCase;
 import rental.fixture.AppTransactionFixture;
 import rental.model.customer.Customer;
+import rental.model.customer.CustomerId;
 import rental.model.customer.CustomerRepository;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static rental.fixture.CustomerFixture.CUSTOMER_NAME;
-import static rental.fixture.CustomerFixture.EMAIL;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.*;
+import static rental.fixture.CustomerFixture.*;
 
 public class CreateCustomerUseCaseTest {
 
@@ -30,10 +32,20 @@ public class CreateCustomerUseCaseTest {
 
     @Test
     void mustCreateCustomerSuccessfully() {
-        Customer expectedCustomer = Customer.builder().name(CUSTOMER_NAME).email(EMAIL).build();
+        Customer expectedCustomerAfterRepositoryExecution = Customer.builder()
+                .name(CUSTOMER_NAME)
+                .email(EMAIL)
+                .id(CUSTOMER_ID)
+                .build();
+        doAnswer(invocation -> {
+            Customer customer = invocation.getArgument(0);
+            customer.created(CUSTOMER_ID);
+            return null;
+        }).when(repository).save(any(Customer.class));
 
-        useCase.execute(CUSTOMER_NAME, EMAIL);
+        CustomerId id = useCase.execute(CUSTOMER_NAME, EMAIL);
 
-        verify(repository).save(expectedCustomer);
+        verify(repository).save(expectedCustomerAfterRepositoryExecution);
+        assertThat(id, is(CUSTOMER_ID));
     }
 }
