@@ -47,16 +47,23 @@ public class CreateRentalUseCaseTest {
                 .when(carAvailabilityChecker)
                 .carIsAvailableOrThrowException(CAR_ID, RENTAL_TIME_RANGE);
         when(rentalPriceCalculator.execute(CAR_ID, RENTAL_TIME_RANGE)).thenReturn(RENTAL_TOTAL_PRICE);
-        Rental expectedRental = Rental.builder()
+        Rental expectedRentalAfterRepositoryExecution = Rental.builder()
+                .id(RENTAL_ID)
                 .customerId(CUSTOMER_ID)
                 .carId(CAR_ID)
                 .timeRange(RENTAL_TIME_RANGE)
                 .totalPrice(RENTAL_TOTAL_PRICE)
                 .build();
+        doAnswer(invocation -> {
+            Rental rental = invocation.getArgument(0);
+            rental.created(RENTAL_ID);
+            return null;
+        }).when(repository).save(any(Rental.class));
 
         RentalId id = useCase.execute(CUSTOMER_ID, CAR_ID, RENTAL_TIME_RANGE);
 
-        verify(repository).save(expectedRental);
+        verify(repository).save(expectedRentalAfterRepositoryExecution);
+        assertThat(id, is(RENTAL_ID));
     }
 
     @Test
