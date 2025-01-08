@@ -29,4 +29,9 @@ public class CarFixture {
     public static Car.Builder aCarWithId() {
         return aCarWithoutId().id(CAR_ID);
     }
+
+    public static boolean carsMatchWithoutId(Car firstCar, Car secondCar) {
+        return firstCar.toBuilder().id(null).build()
+                .equals(secondCar.toBuilder().id(null).build());
+    }
 }

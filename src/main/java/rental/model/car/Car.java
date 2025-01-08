@@ -89,6 +89,14 @@ public class Car {
                 && Objects.equals(dailyPrice(), other.dailyPrice());
     }
 
+    public Builder toBuilder() {
+        return builder()
+                .id(this.id)
+                .model(this.model)
+                .year(this.year)
+                .dailyPrice(this.dailyPrice);
+    }
+
     public static Builder builder() {
         return new Builder();
     }
