@@ -48,4 +48,9 @@ public class CarUseCaseContext {
     public GetCarAvailabilityUseCase getCarAvailabilityUseCase() {
         return new GetCarAvailabilityUseCase(getCarAvailabilityChecker());
     }
+
+    @Bean
+    public GetAllCarsUseCase getAllCarsUseCase() {
+        return new GetAllCarsUseCase(carRepository);
+    }
 }
