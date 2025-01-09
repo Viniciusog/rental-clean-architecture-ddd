@@ -12,8 +12,7 @@ import static org.hamcrest.Matchers.is;
 public class GetCarAvailabilityControllerTest extends ControllerTestBase {
 
     @Test
-    void getFalseWhenTimeRangeIsInsideInterval() throws Exception {
-        String json = "{ \"startTime\": \"2025-01-02T10:00:00Z\", \"endTime\": \"2025-01-05T10:00:00Z\" }";
+    void availableIsFalseWhenTimeRangeIsInsideInterval() throws Exception {
         mockMvc.perform(get("/car/availability/1")
                         .param("startTime", "2025-01-02T10:00:00Z")
                         .param("endTime", "2025-01-05T10:00:00Z")
@@ -21,5 +20,46 @@ public class GetCarAvailabilityControllerTest extends ControllerTestBase {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.available", is(false)));
 
+    }
+
+    @Test
+    void availableIsTrueWhenTimeRangeIsBeforeInterval() throws Exception {
+        mockMvc.perform(get("/car/availability/1")
+                        .param("startTime", "2025-01-01T10:00:00Z")
+                        .param("endTime", "2025-01-04T09:59:59Z")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.available", is(true)));
+
+    }
+
+    @Test
+    void availableIsFalseWhenTimeRangeIsTheInterval() throws Exception {
+        mockMvc.perform(get("/car/availability/1")
+                        .param("startTime", "2025-01-04T10:00:00Z")
+                        .param("endTime", "2025-01-10T10:00:00Z")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.available", is(false)));
+
+    }
+
+    @Test
+    void availableIsTrueWhenTimeRangeIsAfterInterval() throws Exception {
+        mockMvc.perform(get("/car/availability/1")
+                        .param("startTime", "2025-01-10T10:00:01Z")
+                        .param("endTime", "2025-01-15T10:00:00Z")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.available", is(true)));
+
+    }
+
+    @Test
+    void throwsExceptionWhenCarWasNotFound() throws Exception {
+        mockMvc.perform(get("/car/availability/999")
+                        .param("startTime", "2025-01-10T10:00:01Z")
+                        .param("endTime", "2025-01-15T10:00:00Z"))
+                .andExpect(status().isNotFound());
     }
 }
