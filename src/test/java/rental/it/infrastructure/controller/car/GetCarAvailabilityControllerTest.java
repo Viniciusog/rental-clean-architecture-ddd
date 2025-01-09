@@ -62,4 +62,12 @@ public class GetCarAvailabilityControllerTest extends ControllerTestBase {
                         .param("endTime", "2025-01-15T10:00:00Z"))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    void throwsExceptionWhenStartTimeIsAfterEndTime() throws Exception {
+        mockMvc.perform(get("/car/availability/1")
+                        .param("startTime", "2025-01-15T10:00:00Z")
+                        .param("endTime", "2025-01-10T10:00:01Z"))
+                .andExpect(status().isBadRequest());
+    }
 }

@@ -5,10 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
-import rental.infrastructure.controller.car.CarResponse;
-import rental.infrastructure.controller.car.CreateCarResponse;
+import rental.infrastructure.controller.car.dto.CreateCarResponse;
 import rental.it.infrastructure.controller.ControllerTestBase;
-import rental.model.car.CarId;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;

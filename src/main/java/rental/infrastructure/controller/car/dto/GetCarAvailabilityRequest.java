@@ -1,4 +1,4 @@
-package rental.infrastructure.controller.car;
+package rental.infrastructure.controller.car.dto;
 
 import java.time.Instant;
 

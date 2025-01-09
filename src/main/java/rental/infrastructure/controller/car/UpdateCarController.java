@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rental.application.car.UpdateCarUseCase;
+import rental.infrastructure.controller.car.dto.CarResponse;
+import rental.infrastructure.controller.car.dto.UpdateCarRequest;
 import rental.model.car.CarId;
 
 @RestController

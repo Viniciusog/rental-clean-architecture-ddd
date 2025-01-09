@@ -1,7 +1,7 @@
-package rental.ut.infrastructure.controller.car;
+package rental.ut.infrastructure.controller.car.dto;
 
 import org.junit.jupiter.api.Test;
-import rental.infrastructure.controller.car.CreateCarRequest;
+import rental.infrastructure.controller.car.dto.CreateCarRequest;
 import java.math.BigDecimal;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;

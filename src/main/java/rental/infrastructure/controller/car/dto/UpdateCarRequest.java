@@ -1,4 +1,4 @@
-package rental.infrastructure.controller.car;
+package rental.infrastructure.controller.car.dto;
 
 import rental.model.car.Make;
 import rental.model.car.Model;

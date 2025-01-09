@@ -1,7 +1,7 @@
-package rental.ut.infrastructure.controller.car;
+package rental.ut.infrastructure.controller.car.dto;
 
 import org.junit.jupiter.api.Test;
-import rental.infrastructure.controller.car.CreateCarResponse;
+import rental.infrastructure.controller.car.dto.CreateCarResponse;
 import rental.model.car.CarId;
 
 import static org.hamcrest.Matchers.is;

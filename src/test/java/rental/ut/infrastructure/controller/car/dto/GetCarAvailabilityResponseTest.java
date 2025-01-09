@@ -1,8 +1,8 @@
-package rental.ut.infrastructure.controller.car;
+package rental.ut.infrastructure.controller.car.dto;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import rental.infrastructure.controller.car.GetCarAvailabilityResponse;
+import rental.infrastructure.controller.car.dto.GetCarAvailabilityResponse;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 

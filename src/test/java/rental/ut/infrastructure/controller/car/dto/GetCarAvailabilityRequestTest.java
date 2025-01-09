@@ -1,7 +1,7 @@
-package rental.ut.infrastructure.controller.car;
+package rental.ut.infrastructure.controller.car.dto;
 
 import org.junit.jupiter.api.Test;
-import rental.infrastructure.controller.car.GetCarAvailabilityRequest;
+import rental.infrastructure.controller.car.dto.GetCarAvailabilityRequest;
 
 import java.time.Instant;
 

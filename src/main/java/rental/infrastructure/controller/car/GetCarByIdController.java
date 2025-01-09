@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import rental.application.car.GetCarByIdUseCase;
+import rental.infrastructure.controller.car.dto.CarResponse;
 import rental.model.car.Car;
 import rental.model.car.CarId;
 
