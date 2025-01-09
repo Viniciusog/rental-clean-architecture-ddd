@@ -16,36 +16,36 @@ public class CarUseCaseContext {
     private AppTransaction transaction;
 
     @Autowired
-    private CarRepository repository;
+    private CarRepository carRepository;
 
     @Autowired
     private RentalRepository rentalRepository;
 
     @Bean
     public CreateCarUseCase createCarUseCase() {
-        return new CreateCarUseCase(transaction, repository);
+        return new CreateCarUseCase(transaction, carRepository);
     }
 
     @Bean
-    public GetCarByIdUseCase getCarByIdUseCase() { return new GetCarByIdUseCase(repository); }
+    public GetCarByIdUseCase getCarByIdUseCase() { return new GetCarByIdUseCase(carRepository); }
 
     @Bean
     public DeleteCarUseCase deleteCarUseCase() {
-        return new DeleteCarUseCase(transaction, repository);
+        return new DeleteCarUseCase(transaction, carRepository);
     }
 
     @Bean
     public UpdateCarUseCase updateCarUseCase() {
-        return new UpdateCarUseCase(transaction, repository);
+        return new UpdateCarUseCase(transaction, carRepository);
     }
 
     @Bean
     public CarAvailabilityChecker getCarAvailabilityChecker() {
-        return new CarAvailabilityChecker(rentalRepository);
+        return new CarAvailabilityChecker(rentalRepository, carRepository);
     }
 
     @Bean
     public GetCarAvailabilityUseCase getCarAvailabilityUseCase() {
-        return new GetCarAvailabilityUseCase(new CarAvailabilityChecker(rentalRepository));
+        return new GetCarAvailabilityUseCase(getCarAvailabilityChecker());
     }
 }

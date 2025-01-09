@@ -30,7 +30,7 @@ public class CreateRentalUseCase {
                             CarId carId,
                             DateTimeRange timeRange) {
 
-        carAvailabilityChecker.carIsAvailableOrThrowException(carId, timeRange);
+        carAvailabilityChecker.ensureCarIsAvailableOrThrowException(carId, timeRange);
 
         BigDecimal calculatedRentalPrice = rentalPriceCalculator.execute(carId, timeRange);
 

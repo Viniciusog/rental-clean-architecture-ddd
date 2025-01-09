@@ -45,7 +45,7 @@ public class CreateRentalUseCaseTest {
     public void mustCreateSuccessfully() {
         doNothing()
                 .when(carAvailabilityChecker)
-                .carIsAvailableOrThrowException(CAR_ID, RENTAL_TIME_RANGE);
+                .ensureCarIsAvailableOrThrowException(CAR_ID, RENTAL_TIME_RANGE);
         when(rentalPriceCalculator.execute(CAR_ID, RENTAL_TIME_RANGE)).thenReturn(RENTAL_TOTAL_PRICE);
         Rental expectedRentalAfterRepositoryExecution = Rental.builder()
                 .id(RENTAL_ID)
@@ -70,7 +70,7 @@ public class CreateRentalUseCaseTest {
     public void throwsExceptionWhenCarIsNotAvailable() {
         doThrow(new CarNotAvailableException(CAR_ID, RENTAL_TIME_RANGE))
                 .when(carAvailabilityChecker)
-                .carIsAvailableOrThrowException(CAR_ID, RENTAL_TIME_RANGE);
+                .ensureCarIsAvailableOrThrowException(CAR_ID, RENTAL_TIME_RANGE);
         when(rentalPriceCalculator.execute(CAR_ID, RENTAL_TIME_RANGE)).thenReturn(RENTAL_TOTAL_PRICE);
 
         CarNotAvailableException exception = assertThrows(CarNotAvailableException.class, () -> {

@@ -13,6 +13,7 @@ public class GetCarAvailabilityUseCase {
     }
 
     public boolean execute(CarId carId, DateTimeRange timeRange) {
+
         return carAvailabilityChecker.isCarAvailable(carId, timeRange);
     }
 }

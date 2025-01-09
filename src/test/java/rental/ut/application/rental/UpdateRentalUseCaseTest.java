@@ -45,7 +45,7 @@ public class UpdateRentalUseCaseTest {
         Rental rental = mock(Rental.class);
         when(rental.carId()).thenReturn(CAR_ID);
         when(rentalRepository.getById(RENTAL_ID)).thenReturn(Optional.of(rental));
-        doNothing().when(carAvailabilityChecker).carIsAvailableOrThrowException(CAR_ID, RENTAL_TIME_RANGE);
+        doNothing().when(carAvailabilityChecker).ensureCarIsAvailableOrThrowException(CAR_ID, RENTAL_TIME_RANGE);
         when(rentalPriceCalculator.execute(CAR_ID, RENTAL_TIME_RANGE)).thenReturn(RENTAL_TOTAL_PRICE);
 
         useCase.execute(RENTAL_ID, RENTAL_TIME_RANGE);
@@ -74,7 +74,7 @@ public class UpdateRentalUseCaseTest {
         when(rentalRepository.getById(RENTAL_ID)).thenReturn(Optional.of(rental));
         doThrow(new CarNotAvailableException(CAR_ID, RENTAL_TIME_RANGE))
                 .when(carAvailabilityChecker)
-                .carIsAvailableOrThrowException(CAR_ID, RENTAL_TIME_RANGE);
+                .ensureCarIsAvailableOrThrowException(CAR_ID, RENTAL_TIME_RANGE);
 
         CarNotAvailableException exception = assertThrows(CarNotAvailableException.class, () -> {
            useCase.execute(RENTAL_ID, RENTAL_TIME_RANGE);
@@ -92,7 +92,7 @@ public class UpdateRentalUseCaseTest {
         when(rentalRepository.getById(RENTAL_ID)).thenReturn(Optional.of(rental));
         doThrow(new IllegalArgumentException("timeRange is required"))
                 .when(carAvailabilityChecker)
-                .carIsAvailableOrThrowException(CAR_ID, null);
+                .ensureCarIsAvailableOrThrowException(CAR_ID, null);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             useCase.execute(RENTAL_ID, null);
