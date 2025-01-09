@@ -34,13 +34,13 @@ public class CarAvailabilityCheckerTest {
 
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
-    void mustReturnTrueAvailabilitySuccessfully(boolean expectedResult) {
+    void mustReturnTrueAvailabilitySuccessfully(boolean existsInDatabase) {
         when(rentalRepository.existsByCarIdAndTimeRange(CAR_ID, RENTAL_TIME_RANGE))
-                .thenReturn(expectedResult);
+                .thenReturn(existsInDatabase);
 
         boolean available = carAvailabilityChecker.isCarAvailable(CAR_ID, RENTAL_TIME_RANGE);
 
-        assertThat(available, is(expectedResult));
+        assertThat(available, is(!existsInDatabase));
     }
 
     @Test
@@ -63,7 +63,7 @@ public class CarAvailabilityCheckerTest {
 
     @Test
     void mustThrowExceptionWhenCarIsNotAvailable() {
-        when(rentalRepository.existsByCarIdAndTimeRange(CAR_ID, RENTAL_TIME_RANGE)).thenReturn(false);
+        when(rentalRepository.existsByCarIdAndTimeRange(CAR_ID, RENTAL_TIME_RANGE)).thenReturn(true);
 
         CarNotAvailableException exception = assertThrows(CarNotAvailableException.class, () -> {
             carAvailabilityChecker.carIsAvailableOrThrowException(CAR_ID, RENTAL_TIME_RANGE);
@@ -77,7 +77,7 @@ public class CarAvailabilityCheckerTest {
 
     @Test
     void doesNotThrowExceptionWhenCarIsAvailable() {
-        when(rentalRepository.existsByCarIdAndTimeRange(CAR_ID, RENTAL_TIME_RANGE)).thenReturn(true);
+        when(rentalRepository.existsByCarIdAndTimeRange(CAR_ID, RENTAL_TIME_RANGE)).thenReturn(false);
 
         assertDoesNotThrow(() -> {
             carAvailabilityChecker.carIsAvailableOrThrowException(CAR_ID, RENTAL_TIME_RANGE);

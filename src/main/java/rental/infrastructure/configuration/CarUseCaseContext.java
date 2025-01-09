@@ -4,11 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import rental.application.AppTransaction;
-import rental.application.car.CreateCarUseCase;
-import rental.application.car.DeleteCarUseCase;
-import rental.application.car.GetCarByIdUseCase;
-import rental.application.car.UpdateCarUseCase;
+import rental.application.car.*;
+import rental.model.car.CarAvailabilityChecker;
 import rental.model.car.CarRepository;
+import rental.model.rental.RentalRepository;
 
 @Configuration
 public class CarUseCaseContext {
@@ -18,6 +17,9 @@ public class CarUseCaseContext {
 
     @Autowired
     private CarRepository repository;
+
+    @Autowired
+    private RentalRepository rentalRepository;
 
     @Bean
     public CreateCarUseCase createCarUseCase() {
@@ -35,5 +37,15 @@ public class CarUseCaseContext {
     @Bean
     public UpdateCarUseCase updateCarUseCase() {
         return new UpdateCarUseCase(transaction, repository);
+    }
+
+    @Bean
+    public CarAvailabilityChecker getCarAvailabilityChecker() {
+        return new CarAvailabilityChecker(rentalRepository);
+    }
+
+    @Bean
+    public GetCarAvailabilityUseCase getCarAvailabilityUseCase() {
+        return new GetCarAvailabilityUseCase(new CarAvailabilityChecker(rentalRepository));
     }
 }
