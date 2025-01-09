@@ -7,6 +7,7 @@ import rental.application.AppTransaction;
 import rental.application.car.CreateCarUseCase;
 import rental.application.car.DeleteCarUseCase;
 import rental.application.car.GetCarByIdUseCase;
+import rental.application.car.UpdateCarUseCase;
 import rental.model.car.CarRepository;
 
 @Configuration
@@ -29,5 +30,10 @@ public class CarUseCaseContext {
     @Bean
     public DeleteCarUseCase deleteCarUseCase() {
         return new DeleteCarUseCase(transaction, repository);
+    }
+
+    @Bean
+    public UpdateCarUseCase updateCarUseCase() {
+        return new UpdateCarUseCase(transaction, repository);
     }
 }
