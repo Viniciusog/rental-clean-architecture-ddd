@@ -45,4 +45,9 @@ public class CustomerUseCaseContext {
     public UpdateCustomerUseCase updateCustomerUseCase() {
         return new UpdateCustomerUseCase(transaction, customerRepository);
     }
+
+    @Bean
+    public GetCustomerByFilterUseCase getCustomerByFilterUseCase() {
+        return new GetCustomerByFilterUseCase(customerRepository);
+    }
 }
