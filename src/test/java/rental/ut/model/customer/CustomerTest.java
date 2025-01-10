@@ -1,5 +1,6 @@
 package rental.ut.model.customer;
 
+import net.bytebuddy.pool.TypePool;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -135,6 +136,28 @@ public class CustomerTest {
 
         assertThat(customer.name().value(), is("Updated"));
         assertThat(customer.email().address(), is("updated@server.com"));
+    }
+
+    @Test
+    void updateThrowsExceptionWhenNameIsNull() {
+        Customer customer = aCustomerWithId().build();
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            customer.update(null, customer.email());
+        });
+
+        assertThat(exception.getMessage(), is("name is required"));
+    }
+
+    @Test
+    void updateThrowsExceptionWhenEmailIsNull() {
+        Customer customer = aCustomerWithId().build();
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            customer.update(customer.name(), null);
+        });
+
+        assertThat(exception.getMessage(), is("email is required"));
     }
 
     @Test

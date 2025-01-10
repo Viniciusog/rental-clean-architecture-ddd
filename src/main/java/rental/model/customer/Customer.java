@@ -76,11 +76,15 @@ public class Customer {
 
     public void update(CustomerName name, Email email) {
         this.name = validateName(name);
-        this.email = email;
+        this.email = validateEmail(email);
     }
 
     public CustomerName validateName(CustomerName name) {
         return Validation.required(name, "name is required");
+    }
+
+    public Email validateEmail(Email email) {
+        return Validation.required(email, "email is required");
     }
 
     public static Builder builder() {
