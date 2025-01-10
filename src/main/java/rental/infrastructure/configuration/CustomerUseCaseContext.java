@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import rental.application.AppTransaction;
 import rental.application.customer.CreateCustomerUseCase;
+import rental.application.customer.DeleteCustomerUseCase;
 import rental.application.customer.GetCustomerByIdUseCase;
 import rental.model.customer.CustomerRepository;
 
@@ -25,5 +26,10 @@ public class CustomerUseCaseContext {
     @Bean
     public GetCustomerByIdUseCase getCustomerByIdUseCase() {
         return new GetCustomerByIdUseCase(customerRepository);
+    }
+
+    @Bean
+    public DeleteCustomerUseCase deleteCustomerUseCase() {
+        return new DeleteCustomerUseCase(transaction, customerRepository);
     }
 }
