@@ -41,4 +41,8 @@ public class CustomerUseCaseContext {
         return new DeactivateCustomerUseCase(transaction, customerRepository);
     }
 
+    @Bean
+    public UpdateCustomerUseCase updateCustomerUseCase() {
+        return new UpdateCustomerUseCase(transaction, customerRepository);
+    }
 }

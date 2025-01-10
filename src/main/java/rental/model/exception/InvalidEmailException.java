@@ -9,5 +9,4 @@ public class InvalidEmailException extends IllegalArgumentException {
     public InvalidEmailException(String address) {
         super("Invalid email address: " + address, null);
     }
-
 }
