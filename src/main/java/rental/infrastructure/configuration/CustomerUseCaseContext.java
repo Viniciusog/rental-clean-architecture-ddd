@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import rental.application.AppTransaction;
-import rental.application.customer.ActivateCustomerUseCase;
-import rental.application.customer.CreateCustomerUseCase;
-import rental.application.customer.DeleteCustomerUseCase;
-import rental.application.customer.GetCustomerByIdUseCase;
+import rental.application.customer.*;
 import rental.model.customer.CustomerRepository;
 
 @Configuration
@@ -38,4 +35,10 @@ public class CustomerUseCaseContext {
     public ActivateCustomerUseCase activateCustomerUseCase() {
         return new ActivateCustomerUseCase(transaction, customerRepository);
     }
+
+    @Bean
+    public DeactivateCustomerUseCase deactivateCustomerUseCase() {
+        return new DeactivateCustomerUseCase(transaction, customerRepository);
+    }
+
 }
