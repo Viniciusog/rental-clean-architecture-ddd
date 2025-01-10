@@ -21,6 +21,9 @@ public class Email {
     }
 
     private void validate(String address) {
+        if (address == null) {
+            throw new IllegalArgumentException("email address is required");
+        }
         InternetAddress internetAddress;
         try {
             internetAddress = new InternetAddress(address);

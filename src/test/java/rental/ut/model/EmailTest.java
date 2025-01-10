@@ -26,6 +26,15 @@ public class EmailTest {
         assertThat(email.address(), is(address));
     }
 
+    @Test
+    void throwsExceptionWhenCreatingWithNullAddress() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            Email.of(null);
+        });
+
+        assertThat(exception.getMessage(), is("email address is required"));
+    }
+
     @ParameterizedTest
     @ValueSource(strings = {
             "name",
