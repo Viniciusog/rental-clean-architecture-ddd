@@ -62,4 +62,12 @@ public class RentalRepositoryAdapter implements RentalRepository {
     public boolean existsByCarIdAndTimeRange(CarId carId, DateTimeRange timeRange) {
         return repository.existsByCarIdAndTimeRange(carId.value(), timeRange.start(), timeRange.end());
     }
+
+    @Override
+    public boolean existsByCarIdAndTimeRangeWithRentalExclusion(CarId carId,
+                                                                DateTimeRange timeRange,
+                                                                RentalId rentalId) {
+        return repository.existsByCarIdAndTimeRangeWithRentalExclusion(carId.value(), timeRange.start(),
+                timeRange.end(), rentalId.value());
+    }
 }

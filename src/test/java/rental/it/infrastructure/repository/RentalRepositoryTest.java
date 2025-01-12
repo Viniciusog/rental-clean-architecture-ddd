@@ -219,6 +219,34 @@ public class RentalRepositoryTest {
         assertThat(result, is(false));
     }
 
+    @Test
+    void existsByCarIdAndTimeRangeWithRentalExclusionReturnsTrue() {
+        CarId carId = CarId.of(1L);
+        DateTimeRange timeRange = DateTimeRange.of(
+                LocalDateTime.of(2025, 1, 5, 10, 0, 0).toInstant(ZoneOffset.UTC),
+                LocalDateTime.of(2025, 2, 5, 10, 0, 0).toInstant(ZoneOffset.UTC)
+        );
+        RentalId rentalIdToExclude = RentalId.of(2L);
+
+        boolean result = repository.existsByCarIdAndTimeRangeWithRentalExclusion(carId,
+                timeRange, rentalIdToExclude);
+        assertThat(result, is(true));
+    }
+
+    @Test
+    void existsByCarIdAndTimeRangeWithRentalExclusionReturnsFalse() {
+        CarId carId = CarId.of(2L);
+        DateTimeRange timeRange = DateTimeRange.of(
+                LocalDateTime.of(2025, 1, 1, 10, 0, 0).toInstant(ZoneOffset.UTC),
+                LocalDateTime.of(2025, 1, 7, 10, 0, 0).toInstant(ZoneOffset.UTC)
+        );
+        RentalId rentalIdToExclude = RentalId.of(1L);
+
+        boolean result = repository.existsByCarIdAndTimeRangeWithRentalExclusion(carId,
+                timeRange, rentalIdToExclude);
+        assertThat(result, is(false));
+    }
+
     private final Rental RENTAL_FEBRUARY_TEN_DAYS = Rental.builder()
             .id(RentalId.of(5L))
             .customerId(CustomerId.of(3L))
