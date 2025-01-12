@@ -7,7 +7,6 @@ import rental.application.rental.CreateRentalUseCase;
 import rental.fixture.AppTransactionFixture;
 import rental.model.car.CarAvailabilityChecker;
 import rental.model.customer.Customer;
-import rental.model.customer.CustomerId;
 import rental.model.customer.CustomerRepository;
 import rental.model.exception.CarNotAvailableException;
 import rental.model.exception.CarNotFoundException;

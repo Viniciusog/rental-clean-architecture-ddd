@@ -7,6 +7,7 @@ import rental.application.AppTransaction;
 import rental.application.rental.CreateRentalUseCase;
 import rental.application.rental.DeleteRentalUseCase;
 import rental.application.rental.GetRentalByIdUseCase;
+import rental.application.rental.GetRentalsByCustomerIdUseCase;
 import rental.model.car.CarAvailabilityChecker;
 import rental.model.car.CarRepository;
 import rental.model.customer.CustomerRepository;
@@ -53,5 +54,10 @@ public class RentalUseCaseContext {
     @Bean
     public DeleteRentalUseCase deleteRentalUseCase() {
         return new DeleteRentalUseCase(transaction, rentalRepository);
+    }
+
+    @Bean
+    public GetRentalsByCustomerIdUseCase getRentalsByCustomerIdUseCase() {
+        return new GetRentalsByCustomerIdUseCase(rentalRepository);
     }
 }
