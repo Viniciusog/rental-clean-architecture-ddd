@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import rental.application.AppTransaction;
 import rental.application.car.*;
+import rental.application.rental.GetRentalsByCarIdAndTimeRangeUseCase;
 import rental.model.car.CarAvailabilityChecker;
 import rental.model.car.CarRepository;
 import rental.model.rental.RentalRepository;
@@ -52,5 +53,10 @@ public class CarUseCaseContext {
     @Bean
     public GetAllCarsUseCase getAllCarsUseCase() {
         return new GetAllCarsUseCase(carRepository);
+    }
+
+    @Bean
+    public GetRentalsByCarIdAndTimeRangeUseCase getRentalsByCarIdAndTimeRangeUseCase() {
+        return new GetRentalsByCarIdAndTimeRangeUseCase(rentalRepository);
     }
 }
