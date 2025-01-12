@@ -51,6 +51,8 @@ public class CreateRentalUseCaseTest {
 
     @Test
     public void mustCreateSuccessfully() {
+        Customer customer = mock(Customer.class);
+        when(customerRepository.getById(CUSTOMER_ID)).thenReturn(Optional.of(customer));
         doNothing()
                 .when(carAvailabilityChecker)
                 .ensureCarIsAvailableOrThrowException(CAR_ID, RENTAL_TIME_RANGE);
@@ -76,6 +78,8 @@ public class CreateRentalUseCaseTest {
 
     @Test
     public void throwsExceptionWhenCarIsNotAvailable() {
+        Customer customer = mock(Customer.class);
+        when(customerRepository.getById(CUSTOMER_ID)).thenReturn(Optional.of(customer));
         doThrow(new CarNotAvailableException(CAR_ID, RENTAL_TIME_RANGE))
                 .when(carAvailabilityChecker)
                 .ensureCarIsAvailableOrThrowException(CAR_ID, RENTAL_TIME_RANGE);
@@ -96,6 +100,8 @@ public class CreateRentalUseCaseTest {
 
     @Test
     void propagateExceptionWhenCarWasNotFound() {
+        Customer customer = mock(Customer.class);
+        when(customerRepository.getById(CUSTOMER_ID)).thenReturn(Optional.of(customer));
         doThrow(new CarNotFoundException(CAR_ID))
                 .when(rentalPriceCalculator).execute(CAR_ID, RENTAL_TIME_RANGE);
 
