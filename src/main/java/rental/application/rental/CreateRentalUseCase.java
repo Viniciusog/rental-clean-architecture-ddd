@@ -4,7 +4,9 @@ import rental.application.AppTransaction;
 import rental.model.car.CarAvailabilityChecker;
 import rental.model.car.CarId;
 import rental.model.customer.CustomerId;
+import rental.model.customer.CustomerRepository;
 import rental.model.exception.CarNotAvailableException;
+import rental.model.exception.CustomerNotFoundException;
 import rental.model.rental.*;
 
 import java.math.BigDecimal;
@@ -15,20 +17,25 @@ public class CreateRentalUseCase {
     private RentalRepository repository;
     private CarAvailabilityChecker carAvailabilityChecker;
     private RentalPriceCalculator rentalPriceCalculator;
+    private CustomerRepository customerRepository;
 
     public CreateRentalUseCase(AppTransaction transaction,
                                RentalRepository repository,
                                CarAvailabilityChecker carAvailabilityChecker,
-                               RentalPriceCalculator rentalPriceCalculator) {
+                               RentalPriceCalculator rentalPriceCalculator,
+                               CustomerRepository customerRepository) {
         this.transaction = transaction;
         this.repository = repository;
         this.carAvailabilityChecker = carAvailabilityChecker;
         this.rentalPriceCalculator = rentalPriceCalculator;
+        this.customerRepository = customerRepository;
     }
 
     public RentalId execute(CustomerId customerId,
                             CarId carId,
                             DateTimeRange timeRange) {
+        customerRepository.getById(customerId)
+                .orElseThrow(() -> new CustomerNotFoundException(customerId));
 
         carAvailabilityChecker.ensureCarIsAvailableOrThrowException(carId, timeRange);
 

@@ -6,12 +6,18 @@ import rental.application.AppTransaction;
 import rental.application.rental.CreateRentalUseCase;
 import rental.fixture.AppTransactionFixture;
 import rental.model.car.CarAvailabilityChecker;
+import rental.model.customer.Customer;
+import rental.model.customer.CustomerId;
+import rental.model.customer.CustomerRepository;
 import rental.model.exception.CarNotAvailableException;
 import rental.model.exception.CarNotFoundException;
+import rental.model.exception.CustomerNotFoundException;
 import rental.model.rental.Rental;
 import rental.model.rental.RentalId;
 import rental.model.rental.RentalPriceCalculator;
 import rental.model.rental.RentalRepository;
+
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -29,6 +35,7 @@ public class CreateRentalUseCaseTest {
     private CreateRentalUseCase useCase;
     private CarAvailabilityChecker carAvailabilityChecker;
     private RentalPriceCalculator rentalPriceCalculator;
+    private CustomerRepository customerRepository;
 
     @BeforeEach
     public void beforeEach() {
@@ -36,8 +43,9 @@ public class CreateRentalUseCaseTest {
         repository = mock(RentalRepository.class);
         carAvailabilityChecker = mock(CarAvailabilityChecker.class);
         rentalPriceCalculator = mock(RentalPriceCalculator.class);
+        customerRepository = mock(CustomerRepository.class);
         useCase = new CreateRentalUseCase(transaction, repository,
-                carAvailabilityChecker, rentalPriceCalculator);
+                carAvailabilityChecker, rentalPriceCalculator, customerRepository);
         AppTransactionFixture.assertThatInTransaction(transaction).when(repository).save(any());
     }
 
@@ -96,5 +104,16 @@ public class CreateRentalUseCaseTest {
         });
 
         assertThat(exception.getMessage(), is("Car not found with id: " + CAR_ID.value()));
+    }
+
+    @Test
+    void throwsExceptionWhenCustomerWasNotFound() {
+        when(customerRepository.getById(CUSTOMER_ID)).thenReturn(Optional.empty());
+
+        CustomerNotFoundException exception = assertThrows(CustomerNotFoundException.class, () -> {
+            useCase.execute(CUSTOMER_ID, CAR_ID, RENTAL_TIME_RANGE);
+        });
+
+        assertThat(exception.getMessage(), is("Customer not found with id: " + CUSTOMER_ID.value()));
     }
 }
