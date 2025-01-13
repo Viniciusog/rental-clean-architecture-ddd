@@ -114,4 +114,75 @@ public class CarAvailabilityCheckerTest {
             carAvailabilityChecker.ensureCarIsAvailableOrThrowException(CAR_ID, RENTAL_TIME_RANGE);
         });
     }
+
+    @Test
+    void ensureCarIsAvailableWithRentalExclusionThrowsException() {
+        Car car = mock(Car.class);
+        when(carRepository.getById(CAR_ID)).thenReturn(Optional.of(car));
+        when(rentalRepository.existsByCarIdAndTimeRangeWithRentalExclusion(
+                CAR_ID, RENTAL_TIME_RANGE, RENTAL_ID))
+                .thenReturn(true);
+
+        assertThrows(CarNotAvailableException.class, () -> {
+            carAvailabilityChecker.ensureCarIsAvailableWithRentalExclusionOrThrowException(
+                    CAR_ID, RENTAL_TIME_RANGE, RENTAL_ID);
+        });
+    }
+
+    @Test
+    void ensureCarIsAvailableWithRentalExclusionDoesNotThrow() {
+        Car car = mock(Car.class);
+        when(carRepository.getById(CAR_ID)).thenReturn(Optional.of(car));
+        when(rentalRepository.existsByCarIdAndTimeRangeWithRentalExclusion(
+                CAR_ID, RENTAL_TIME_RANGE, RENTAL_ID))
+                .thenReturn(false);
+
+        assertDoesNotThrow(() -> {
+            carAvailabilityChecker.ensureCarIsAvailableWithRentalExclusionOrThrowException(
+                    CAR_ID, RENTAL_TIME_RANGE, RENTAL_ID);
+        });
+    }
+
+    @Test
+    void ensureCarIsAvailableWithRentalExclusionThrowsCarNotFound() {
+        when(carRepository.getById(CAR_ID)).thenReturn(Optional.empty());
+        when(rentalRepository.existsByCarIdAndTimeRangeWithRentalExclusion(
+                CAR_ID, RENTAL_TIME_RANGE, RENTAL_ID))
+                .thenReturn(false);
+
+        assertThrows(CarNotFoundException.class, () -> {
+            carAvailabilityChecker.ensureCarIsAvailableWithRentalExclusionOrThrowException(
+                    CAR_ID, RENTAL_TIME_RANGE, RENTAL_ID);
+        });
+    }
+
+    @Test
+    void ensureCarIsAvailableWithRentalExclusionThrowsCarIdIsRequired() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            carAvailabilityChecker.ensureCarIsAvailableWithRentalExclusionOrThrowException(
+                    null, RENTAL_TIME_RANGE, RENTAL_ID);
+        });
+
+        assertThat(exception.getMessage(), is("carId is required"));
+    }
+
+    @Test
+    void ensureCarIsAvailableWithRentalExclusionThrowsTimeRangeIsRequired() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            carAvailabilityChecker.ensureCarIsAvailableWithRentalExclusionOrThrowException(
+                    CAR_ID, null, RENTAL_ID);
+        });
+
+        assertThat(exception.getMessage(), is("timeRange is required"));
+    }
+
+    @Test
+    void ensureCarIsAvailableWithRentalExclusionThrowsRentalIdIsRequired() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            carAvailabilityChecker.ensureCarIsAvailableWithRentalExclusionOrThrowException(
+                    CAR_ID, RENTAL_TIME_RANGE, null);
+        });
+
+        assertThat(exception.getMessage(), is("rentalId is required"));
+    }
 }
