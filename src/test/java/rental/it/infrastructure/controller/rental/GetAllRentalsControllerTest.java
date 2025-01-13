@@ -21,7 +21,7 @@ public class GetAllRentalsControllerTest extends ControllerTestBase {
                                 "carId": 2,
                                 "startTime": "2025-01-01T10:00:00Z",
                                 "endTime": "2025-01-07T10:00:00Z",
-                                "totalPrice": 400.00
+                                "totalPrice": 2400.00
                             },
                             {
                                 "id": 2,

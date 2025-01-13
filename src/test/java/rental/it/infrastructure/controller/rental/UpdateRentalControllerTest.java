@@ -1,8 +1,11 @@
 package rental.it.infrastructure.controller.rental;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MvcResult;
+import rental.infrastructure.configuration.ExceptionResponse;
 import rental.it.infrastructure.controller.ControllerTestBase;
 import rental.model.car.CarId;
 import rental.model.rental.DateTimeRange;
@@ -12,15 +15,20 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.Matchers.is;
 
 public class UpdateRentalControllerTest extends ControllerTestBase {
 
     @Autowired
     private RentalPriceCalculator rentalPriceCalculator;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     public void mustUpdateSuccessfully() throws Exception {
@@ -117,10 +125,15 @@ public class UpdateRentalControllerTest extends ControllerTestBase {
                      "endTime": "2025-01-07T10:00:00Z"
                 }
                 """;
-        mockMvc.perform(put("/rental/2")
+        MvcResult result = mockMvc.perform(put("/rental/2")
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        String jsonResult = result.getResponse().getContentAsString();
+        ExceptionResponse exceptionResponse = objectMapper.readValue(jsonResult, ExceptionResponse.class);
+        assertThat(exceptionResponse.getMessage(), is("Start time is required."));
     }
 
     @Test
@@ -131,9 +144,14 @@ public class UpdateRentalControllerTest extends ControllerTestBase {
                      "endTime": null
                 }
                 """;
-        mockMvc.perform(put("/rental/2")
+        MvcResult result = mockMvc.perform(put("/rental/2")
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        String jsonResult = result.getResponse().getContentAsString();
+        ExceptionResponse exceptionResponse = objectMapper.readValue(jsonResult, ExceptionResponse.class);
+        assertThat(exceptionResponse.getMessage(), is("End time is required."));
     }
 }
