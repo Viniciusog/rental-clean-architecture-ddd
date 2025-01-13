@@ -7,9 +7,12 @@ import rental.application.AppTransaction;
 import rental.application.rental.UpdateRentalUseCase;
 import rental.fixture.AppTransactionFixture;
 import rental.model.car.CarAvailabilityChecker;
+import rental.model.car.CarRepository;
 import rental.model.exception.CarNotAvailableException;
+import rental.model.exception.CarNotFoundException;
 import rental.model.exception.RentalNotFoundException;
 import rental.model.rental.Rental;
+import rental.model.rental.RentalId;
 import rental.model.rental.RentalPriceCalculator;
 import rental.model.rental.RentalRepository;
 import java.util.Optional;
@@ -45,7 +48,8 @@ public class UpdateRentalUseCaseTest {
         Rental rental = mock(Rental.class);
         when(rental.carId()).thenReturn(CAR_ID);
         when(rentalRepository.getById(RENTAL_ID)).thenReturn(Optional.of(rental));
-        doNothing().when(carAvailabilityChecker).ensureCarIsAvailableOrThrowException(CAR_ID, RENTAL_TIME_RANGE);
+        doNothing().when(carAvailabilityChecker)
+                .ensureCarIsAvailableWithRentalExclusionOrThrowException(CAR_ID, RENTAL_TIME_RANGE, RENTAL_ID);
         when(rentalPriceCalculator.execute(CAR_ID, RENTAL_TIME_RANGE)).thenReturn(RENTAL_TOTAL_PRICE);
 
         useCase.execute(RENTAL_ID, RENTAL_TIME_RANGE);
@@ -74,7 +78,7 @@ public class UpdateRentalUseCaseTest {
         when(rentalRepository.getById(RENTAL_ID)).thenReturn(Optional.of(rental));
         doThrow(new CarNotAvailableException(CAR_ID, RENTAL_TIME_RANGE))
                 .when(carAvailabilityChecker)
-                .ensureCarIsAvailableOrThrowException(CAR_ID, RENTAL_TIME_RANGE);
+                .ensureCarIsAvailableWithRentalExclusionOrThrowException(CAR_ID, RENTAL_TIME_RANGE, RENTAL_ID);
 
         CarNotAvailableException exception = assertThrows(CarNotAvailableException.class, () -> {
            useCase.execute(RENTAL_ID, RENTAL_TIME_RANGE);
@@ -86,13 +90,28 @@ public class UpdateRentalUseCaseTest {
     }
 
     @Test
+    void propagateExceptionWhenCarWasNotFound() {
+        Rental rental = mock(Rental.class);
+        when(rental.carId()).thenReturn(CAR_ID);
+        when(rentalRepository.getById(RENTAL_ID)).thenReturn(Optional.of(rental));
+        doThrow(new CarNotFoundException(CAR_ID)).when(carAvailabilityChecker)
+                .ensureCarIsAvailableWithRentalExclusionOrThrowException(CAR_ID, RENTAL_TIME_RANGE, RENTAL_ID);
+
+        assertThrows(CarNotFoundException.class, () -> {
+           useCase.execute(RENTAL_ID, RENTAL_TIME_RANGE);
+        });
+
+        verify(rentalRepository, never()).save(any());
+    }
+
+    @Test
     void propagateExceptionWhenTimeRangeIsNull() {
         Rental rental = mock(Rental.class);
         when(rental.carId()).thenReturn(CAR_ID);
         when(rentalRepository.getById(RENTAL_ID)).thenReturn(Optional.of(rental));
         doThrow(new IllegalArgumentException("timeRange is required"))
                 .when(carAvailabilityChecker)
-                .ensureCarIsAvailableOrThrowException(CAR_ID, null);
+                .ensureCarIsAvailableWithRentalExclusionOrThrowException(CAR_ID, null, RENTAL_ID);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             useCase.execute(RENTAL_ID, null);

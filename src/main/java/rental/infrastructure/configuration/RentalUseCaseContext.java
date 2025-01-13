@@ -63,4 +63,8 @@ public class RentalUseCaseContext {
         return new GetAllRentalsUseCase(rentalRepository);
     }
 
+    @Bean
+    public UpdateRentalUseCase updateRentalUseCase() {
+        return new UpdateRentalUseCase(transaction, rentalRepository, carAvailabilityChecker, rentalPriceCalculator());
+    }
 }
