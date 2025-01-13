@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import rental.model.exception.AbstractConflictException;
 import rental.model.exception.AbstractNotFoundException;
 
 @ControllerAdvice
@@ -14,6 +15,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleAbstractNotFoundException(
             AbstractNotFoundException exception, WebRequest request) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ExceptionResponse(exception));
+    }
+
+    @ExceptionHandler(AbstractConflictException.class)
+    public ResponseEntity<ExceptionResponse> handleAbstractConflictException(
+            AbstractConflictException exception, WebRequest request) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(new ExceptionResponse(exception));
     }
 
