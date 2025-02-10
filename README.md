@@ -1,8 +1,9 @@
 ## Spring Rental Application - Domain Drive Design (DDD)
 
-Esse projeto é uma API Java Spring feita utilizando Clean Architecture juntamente com Domain Drive Design, 
-seguindo os princípios do SOLID para melhor estruturação do código.
-<br> Contém **mais de 260 testes**, incluindo testes unitários, testes de integração e end-to-end com JUnit e Mockito.
+Esse projeto é uma API Java Spring que permite clientes alugarem carros por determinado período. <br>
+A API foi feita utilizando Clean Architecture juntamente com Domain Drive Design, seguindo os princípios do SOLID para melhor estruturação do código.
+<br> Contém **mais de 260 testes**, incluindo testes unitários, testes de integração e end-to-end com JUnit e Mockito para todas as partes da aplicação, sejam elas modelos, serviços, use cases e controllers.
+
 
 ### Tecnologias usadas 
 Java 21. <br>
