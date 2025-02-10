@@ -35,6 +35,8 @@ public class ActivateCustomerUseCaseTest {
     @Test
     void activateCustomerWhenExistsAndNotActive() {
         Customer customer = mock(Customer.class);
+        System.out.println(customer.getClass().getName());
+
         when(repository.getById(CUSTOMER_ID)).thenReturn(Optional.of(customer));
 
         useCase.execute(CUSTOMER_ID);

@@ -7,7 +7,7 @@ import rental.model.exception.CustomerIsAlreadyInactiveException;
 
 import java.util.Objects;
 
-public class Customer {
+public final class Customer {
 
     private CustomerId id;
     private CustomerName name;
